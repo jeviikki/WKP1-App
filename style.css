@@ -1,0 +1,56 @@
+:root{
+  --border: 1px solid #ccc;
+}
+
+body {
+  background-color: #f0f0f0;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin: 0;
+  padding: 0;
+}
+
+th {
+  background-color: #f0f0f0;
+  border-bottom: var(--border);
+  font-weight: bold;
+  padding: 0.5em 1em;
+  text-align: left;
+}
+
+td {
+  border-bottom: var(--border);
+  padding: 0.5em 1em;
+}
+
+.highlight {
+	background-color: orange;
+}
+
+dialog {
+	position: fixed;
+  top: 1em;
+  right: 0;
+  border: var(--border);
+}
+
+#close-btn{
+  border: var(--border);
+  background-color: red;
+  color: white;
+  cursor: pointer;
+}
+
+form{
+  display: none;
+}
+
+.visible-form{
+  display: block;
+}

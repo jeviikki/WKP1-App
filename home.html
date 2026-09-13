@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Restaurants App</title>
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="components.js" defer ></script>
+  <script type="module" src="main.js" defer></script>
+</head>
+
+<body>
+  <div class="hero-img">
+    <!-- a hero img could be added here -->
+    <p>Registered users can choose a favorite restaurant to display on top of the page.</p>
+    <!-- TODO these do nothing yet -->
+    <button>Register now</button>
+    <button>Log in</button>
+  </div>
+
+  <h1>Restaurants</h1>
+
+  <button id="open-filters">Filtering options</button>
+  <form id="filter-form">
+
+    <!-- Sort by... -->
+    <div>
+      <label for="order">Sort by...</label>
+      <select name="order" id="order">
+        <option value="">-- Select a sorting method --</option>
+        <option value="name">Alphabetical (name)</option>
+        <option value="address">Alphabetical (address)</option>
+        <!-- TODO <option value="location">Location</option> -->
+      </select>
+    </div>
+    
+    <!-- Filter companies -->
+    <div class="filtering-option">
+      <label for="company">Show me restaurants for...</label>
+      <div class="checkbox-group">
+        <!-- both checked by default -->
+        <input type="checkbox" id="sodexo" name="company" value="sodexo" checked><label for="sodexo">Sodexo</label>
+        <input type="checkbox" id="compass-group" name="company" value="compass group" checked><label for="compass-group">Compass Group</label>
+      </div>
+    </div>
+    <input id="filter-btn" type="submit" value="Filter">
+  </form>
+
+  <table>
+    <tr class="tableheader">
+      <th><span class="table-icon"></span>Name</th>
+      <th><span class="table-icon"></span>Address</th>
+      <th><span class="table-icon"></span>City</th>
+      <th><span class="table-icon"></span>Company</th>
+    </tr>
+    <!-- add restaurants here -->
+  </table>
+  <!-- modal -->
+  <dialog>
+    <!-- add restaurant info here when restaurant is clicked -->
+  </dialog>
+</body>
+
+</html>
