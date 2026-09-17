@@ -69,8 +69,10 @@ const restaurantModal = (restaurant, menu) => {
 	}
 
 	const dialogHtml = `
-		<button id="close-btn">X</button>
-		<h2>${name}</h2>
+		<div class="dialog-top">
+			<h2>${name}</h2>
+			<button id="close-btn">X</button>
+		</div>
 		<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
 		<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
 		<span id="place-company"><br><b>Company:</b> ${company}</p></span>

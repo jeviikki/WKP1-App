@@ -10,12 +10,15 @@
 	--default-radius: 10px;
 }
 
+* {
+	font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	color: var(--fancy-black);
+}
+
 body {
 	background-color: var(--fancy-white);
-	font-family: sans-serif;
-	margin: 0;
 	padding: 0;
-	color: var(--fancy-black);
+	margin: 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -70,7 +73,7 @@ td {
 }
 
 .highlight {
-	background-color: var(--fancy-yellow);
+	font-weight: bold;
 }
 
 dialog {
@@ -78,13 +81,27 @@ dialog {
 	top: 1em;
 	right: 0;
 	border: var(--border);
+	border-radius: var(--default-radius);
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+
 dialog::backdrop {
 	background: rgba(0, 0, 0, 0.5);
 }
 
+.dialog-top {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: 10px;
+}
+
+.dialog-top h2 {
+	margin: 0;
+}
+
 #close-btn {
-	border: var(--border);
+	border: none;
 	background-color: var(--fancy-red);
 	color: #fff;
 	font-size: 18px;
