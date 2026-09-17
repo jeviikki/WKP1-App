@@ -1,22 +1,22 @@
 const restaurantRow = (restaurant) => {
-    const {name, address = "Unknown", city, company} = restaurant;
+	const { name, address = "Unknown", city, company } = restaurant;
 	const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${name}</td><td>${address}</td><td>${city}</td><td>${company}</td>`;
-    return tr;
-}
+	tr.innerHTML = `<td>${name}</td><td>${address}</td><td>${city}</td><td>${company}</td>`;
+	return tr;
+};
 
 const restaurantModal = (restaurant, menu) => {
-	const {name, address, postalCode, city, phone, company} = restaurant;
+	const { name, address, postalCode, city, phone, company } = restaurant;
 	const courses = menu.courses;
-	const noDiets = "No special diets listed"
-	let menuHtml
+	const noDiets = "No special diets listed";
+	let menuHtml;
 
 	if (courses.length < 1) {
 		menuHtml = `Empty.`;
 	} else {
 		menuHtml = "<ul>";
 		for (const course of courses) {
-			let {name, price, diets} = course;
+			let { name, price, diets } = course;
 			console.log(course);
 			price = price || "? €";
 			diets = diets || noDiets;
@@ -34,50 +34,49 @@ const restaurantModal = (restaurant, menu) => {
 			menuHtml += `<li>
 			<b>${name}</b> 
 			(${diets.map((diet) => {
-			switch (diet) {
-				//sydänmerkitty
-				case "*":
-					return "&#x2764";
-				//ilmastoystävällinen
-				case "ILM":
-					return "&#x267B";
-				//gluteeniton
-				case "G":
-					return "&#x1F33E";
-				//laktoositon, vähälaktoosinen, maidoton
-				//should be given different icons to avoid having the same emoji multiple times in a diets listing
-				case "L": case "VL": case "M":
-					return "&#x1F42E";
-				//vegaani
-				case "Veg":
-					return "&#x1F331";
-				// sisältää allergeeneja
-				case "A":
-					return "&#x1F927";
-				// sisältää valkosipulia
-				case "VS":
-					return "&#x1F9C4";
-				default:
-					return diet;
-				}})})
+				switch (diet) {
+					//sydänmerkitty
+					case "*":
+						return "&#x2764";
+					//ilmastoystävällinen
+					case "ILM":
+						return "&#x267B";
+					//gluteeniton
+					case "G":
+						return "&#x1F33E";
+					//laktoositon, vähälaktoosinen, maidoton
+					//should be given different icons to avoid having the same emoji multiple times in a diets listing
+					case "L":
+					case "VL":
+					case "M":
+						return "&#x1F42E";
+					//vegaani
+					case "Veg":
+						return "&#x1F331";
+					// sisältää allergeeneja
+					case "A":
+						return "&#x1F927";
+					// sisältää valkosipulia
+					case "VS":
+						return "&#x1F9C4";
+					default:
+						return diet;
+				}
+			})})
 				${price}</li>`;
 		}
-		menuHtml += "</ul>"
+		menuHtml += "</ul>";
 	}
 
 	const dialogHtml = `
 		<button id="close-btn">X</button>
-		<h2>Restaurant info</h2>
-		<span id="place-name"><b>Restaurant name:</b> ${name}</span>
+		<h2>${name}</h2>
 		<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
 		<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
 		<span id="place-company"><br><b>Company:</b> ${company}</p></span>
 		<h2>Today's menu</h2>
-		${menuHtml}`
+		${menuHtml}`;
 	return dialogHtml;
-}
+};
 
-export{
-	restaurantModal,
-	restaurantRow
-}; 
+export { restaurantModal, restaurantRow };
