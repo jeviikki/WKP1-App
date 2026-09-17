@@ -6,14 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Restaurants App</title>
   <link rel="stylesheet" href="style.css">
-  <script type="module" src="components.js" defer ></script>
   <script type="module" src="main.js" defer></script>
 </head>
 
 <body>
   <div class="hero-img">
     <!-- a hero img could be added here -->
-    <p>Registered users can choose a favorite restaurant to display on top of the page.</p>
+    <p>Registered users can choose a favorite restaurant to display at the top of the page.</p>
     <!-- TODO these do nothing yet -->
     <button>Register now</button>
     <button>Log in</button>
@@ -25,7 +24,7 @@
   <form id="filter-form">
 
     <!-- Sort by... -->
-    <div>
+    <div class="filtering-option">
       <label for="order">Sort by...</label>
       <select name="order" id="order">
         <option value="">-- Select a sorting method --</option>
@@ -44,7 +43,9 @@
         <input type="checkbox" id="compass-group" name="company" value="compass group" checked><label for="compass-group">Compass Group</label>
       </div>
     </div>
+
     <input id="filter-btn" type="submit" value="Filter">
+
   </form>
 
   <table>

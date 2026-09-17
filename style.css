@@ -1,5 +1,10 @@
 :root{
   --border: 1px solid #ccc;
+  --fancy-yellow: #FBA823;
+  --fancy-red: #C3423F;
+  --fancy-black: #1C1D21;
+  --fancy-blue: #157A6E;
+  --fancy-green: #499F68;
 }
 
 body {
@@ -7,6 +12,7 @@ body {
   font-family: sans-serif;
   margin: 0;
   padding: 0;
+  color: var(--fancy-black);
 }
 
 table {
@@ -17,7 +23,8 @@ table {
 }
 
 th {
-  background-color: #f0f0f0;
+  background-color: var(--fancy-black);
+  color: #ccc;
   border-bottom: var(--border);
   font-weight: bold;
   padding: 0.5em 1em;
@@ -30,7 +37,7 @@ td {
 }
 
 .highlight {
-	background-color: orange;
+	background-color: var(--fancy-yellow);
 }
 
 dialog {
@@ -39,12 +46,27 @@ dialog {
   right: 0;
   border: var(--border);
 }
+dialog::backdrop{
+  background: rgba(0,0,0,0.5);
+}
 
 #close-btn{
   border: var(--border);
-  background-color: red;
-  color: white;
+  background-color: var(--fancy-red);
+  color: #f0f0f0;
   cursor: pointer;
+}
+
+#open-filters{
+	border: none;
+	background-color: var(--fancy-red);
+	color: #f0f0f0;
+	font-size: 18px;
+	padding: 5px;
+}
+
+#open-filters:hover{
+	cursor: pointer;
 }
 
 form{
@@ -52,5 +74,13 @@ form{
 }
 
 .visible-form{
-  display: block;
+  display: flex;
+  margin-top: 10px;
+  gap: 5px;
+}
+
+.checkbox-group{
+  display: flex;
+  gap: 5px;
+  justify-content: baseline;
 }
