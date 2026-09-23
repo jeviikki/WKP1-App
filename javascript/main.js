@@ -111,9 +111,4 @@ form.addEventListener("submit", async (event) => {
 	await getRestaurants();
 });
 
-//open filters
-const openFilters = document.querySelector("#open-filters");
-openFilters.addEventListener("click", () => {
-	form.setAttribute("class", "visible-form");
-});
 await getRestaurants();

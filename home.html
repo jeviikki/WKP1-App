@@ -41,34 +41,49 @@
 
 		<h1>Restaurants</h1>
 
-		<button id="open-filters">Filtering options</button>
+		<div class="form-container">
 
-		<form id="filter-form">
+			<h2>Filters</h2>
 
-			<!-- Sort by... -->
-			<div class="filtering-option">
-			<label for="order">Sort by...</label>
-			<select name="order" id="order">
-				<option value="">-- Select a sorting method --</option>
-				<option value="name">Alphabetical (name)</option>
-				<option value="address">Alphabetical (address)</option>
-				<!-- TODO <option value="location">Location</option> -->
-			</select>
-			</div>
-			
-			<!-- Filter companies -->
-			<div class="filtering-option">
-			<label for="company">Show me restaurants for...</label>
-			<div class="checkbox-group">
-				<!-- both checked by default -->
-				<input type="checkbox" id="sodexo" name="company" value="sodexo" checked><label for="sodexo">Sodexo</label>
-				<input type="checkbox" id="compass-group" name="company" value="compass group" checked><label for="compass-group">Compass Group</label>
-			</div>
-			</div>
+			<form id="filter-form">
 
-			<input id="filter-btn" type="submit" value="Filter">
+				<!-- Sort by... -->
+				<div class="filtering-option">
+				<label for="order">Sort by...</label>
+				<select name="order" id="order">
+					<option value="">-- Select a sorting method --</option>
+					<option value="name">Alphabetical (name)</option>
+					<option value="address">Alphabetical (address)</option>
+					<!-- TODO <option value="location">Location</option> -->
+				</select>
+				</div>
+				
+				<!-- Filter companies -->
+				<div class="filtering-option">
+					<label for="company">Show me restaurants for...</label>
+					<div class="checkbox-group">
+						<!-- both checked by default -->
+						<input type="checkbox" id="sodexo" name="company" value="sodexo" checked><label for="sodexo">Sodexo</label>
+						<input type="checkbox" id="compass-group" name="company" value="compass group" checked><label for="compass-group">Compass Group</label>
+					</div>
+				</div>
+				
+				<!-- Weekly or daily menus (NOT IMPLEMENTED YET) -->
+				<div class="filtering-option">
+					<label for="menu-type">Menu types</label>
+					<div class="checkbox-group">
+						<!-- daily checked by default -->
+						<input type="radio" id="daily" name="menu-type" value="daily" checked><label for="daily">Daily</label>
+						<input type="radio" id="weekly" name="menu-type" value="weekly group"><label for="weekly">Weekly</label>
+					</div>
+				</div>
 
-		</form>
+				<input id="filter-btn" type="submit" value="Filter">
+
+			</form>
+
+		</div>
+		
 	</div>
 
 	<table>
