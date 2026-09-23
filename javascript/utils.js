@@ -1,6 +1,6 @@
 "use strict";
 
-async function fetchData(url) {
+const fetchData = async (url) => {
 	let data;
 	try {
 		const response = await fetch(url);
@@ -13,6 +13,6 @@ async function fetchData(url) {
 		alert(data);
 		return data;
 	}
-}
+};
 
 export { fetchData };

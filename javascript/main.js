@@ -1,17 +1,24 @@
 import { restaurantModal, restaurantRow } from "./components.js";
-import { baseUrl, target, dialog } from "./variables.js";
+import { baseUrl } from "./variables.js";
 import { fetchData } from "./utils.js";
 
 // clean up code and turn into typescript
 
 ("use strict");
 
-async function getRestaurants() {
+const target = document.querySelector("table");
+const dialog = document.querySelector("dialog");
+
+if (!target || !dialog) {
+	throw new Error("Some elements were not able to be found");
+}
+
+const getRestaurants = async () => {
 	const restaurants = await fetchData(baseUrl);
 	const filteredRestaurants = filterRestaurants(restaurants);
 	const sortedRestaurants = sortRestaurants(filteredRestaurants);
-	await renderRestaurants(sortedRestaurants);
-}
+	renderRestaurants(sortedRestaurants);
+};
 
 const filterRestaurants = (restaurants) => {
 	let data;
@@ -69,32 +76,33 @@ const sortRestaurants = (restaurants) => {
 	return restaurants;
 };
 
-async function renderRestaurants(restaurants) {
+const renderRestaurants = (restaurants) => {
 	//render
 	restaurants.forEach((restaurant) => {
 		const row = restaurantRow(restaurant);
 		target.append(row);
 
-		row.addEventListener("click", async function (event) {
+		row.addEventListener("click", async () => {
 			// highlight
 			const menu = await fetchData(
 				`${baseUrl}/daily/${restaurant._id}/en`,
 			);
-			document.querySelectorAll("tr").forEach((row) => {
-				row.classList.remove("highlight");
+
+			document.querySelectorAll(".highlight").forEach((highlighted) => {
+				highlighted.classList.remove("highlight");
 			});
-			row.classList = "highlight";
+			row.classList.add("highlight");
 
 			dialog.innerHTML = restaurantModal(restaurant, menu);
-			dialog.setAttribute("open", "");
+			dialog.showModal();
 
 			const closeBtn = document.querySelector("#close-btn");
-			closeBtn.addEventListener("click", (event) => {
+			closeBtn.addEventListener("click", () => {
 				dialog.close();
 			});
 		});
 	});
-}
+};
 
 // filter button
 const form = document.querySelector("#filter-form");
@@ -105,7 +113,7 @@ form.addEventListener("submit", async (event) => {
 
 //open filters
 const openFilters = document.querySelector("#open-filters");
-openFilters.addEventListener("click", (event) => {
+openFilters.addEventListener("click", () => {
 	form.setAttribute("class", "visible-form");
 });
 await getRestaurants();
