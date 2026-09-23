@@ -10,19 +10,28 @@
 </head>
 
 <body>
-  <div class="hero-img">
+  <div>
     <!-- a hero img could be added here -->
-    <p>Registered users can...</p>
-	<ul>
-		<li>Set a cool profile picture</li>
-		<li>Select a favorite restaurant</li>
-		<li>Save filter preferences</li>
-	</ul>
-    <!-- TODO these do nothing yet -->
-	 <div>
-		<button>Register now</button>
-    	<button>I have an account</button>
-	 </div>
+	<div id="unregistered" class="hero-img">
+		<p>If you register, you can add a profile picture and choose your preferred restaurant.</p>
+		<!-- TODO these do nothing yet -->
+		<div>
+			<button>Register now</button>
+			<button>I have an account</button>
+		</div>
+	</div>
+    <div id="registered">
+		<!-- not implemented yet: once implemented it will fetch registered user data and display it here -->
+		<div id="user-avatar">
+			<!-- user avatar goes here -->
+		</div>
+		<div id="user-speech">
+			<!-- a script will fill out this information -->
+			<blockquote>
+				<p><span id="user-name">This user</span>'s favorite restaurant is <span id="user-fav">none of them</span>!</p>
+			</blockquote>
+		</div>
+	</div>
     
   </div>
 

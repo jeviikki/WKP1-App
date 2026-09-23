@@ -14,7 +14,13 @@ const restaurantModal = (restaurant, menu) => {
 	if (courses.length < 1) {
 		menuHtml = `Empty.`;
 	} else {
-		menuHtml = "<ul>";
+		// table header
+		menuHtml = `<table>
+			<tr>
+				<th>Course</th>
+				<th>Price</th>
+				<th>Diets</th>
+			</tr>`;
 		for (const course of courses) {
 			let { name, price, diets } = course;
 			console.log(course);
@@ -31,9 +37,10 @@ const restaurantModal = (restaurant, menu) => {
 				diets = diets.split(", ");
 			}
 
-			menuHtml += `<li>
-			<b>${name}</b> 
-			(${diets.map((diet) => {
+			menuHtml += `<tr>
+			<td>${name}</td> 
+			<td>${price}</td>
+			<td>${diets.map((diet) => {
 				switch (diet) {
 					//sydänmerkitty
 					case "*":
@@ -62,10 +69,10 @@ const restaurantModal = (restaurant, menu) => {
 					default:
 						return diet;
 				}
-			})})
-				${price}</li>`;
+			})}</td>
+			`;
 		}
-		menuHtml += "</ul>";
+		menuHtml += "</table>";
 	}
 
 	const dialogHtml = `
@@ -73,9 +80,17 @@ const restaurantModal = (restaurant, menu) => {
 			<h2>${name}</h2>
 			<button id="close-btn">X</button>
 		</div>
-		<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
-		<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
-		<span id="place-company"><br><b>Company:</b> ${company}</p></span>
+
+		<div>
+			<div>
+				<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
+				<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
+				<span id="place-company"><br><b>Company:</b> ${company}</p></span>
+			</div>
+			<div id="map">
+				<!-- MAP HERE -->
+			</div>
+		</div>
 		<h2>Today's menu</h2>
 		${menuHtml}`;
 	return dialogHtml;

@@ -8,7 +8,7 @@ async function fetchData(url) {
 		data = response.json();
 		return data;
 	} catch (error) {
-		data = `Error loading restaurants`;
+		data = `Error loading restaurants. Check that you are connected to eduroam or using Metropolia VPN`;
 		console.log(error);
 		alert(data);
 		return data;

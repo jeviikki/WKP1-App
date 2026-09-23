@@ -25,6 +25,17 @@ body {
 	gap: 10px;
 }
 
+@font-face {
+	font-family: Cursive-regular;
+	src: url("../fonts/EduNSWACTCursive-Regular.ttf");
+}
+
+h1,
+h2,
+h3 {
+	font-family: Cursive-regular;
+}
+
 .hero-img {
 	width: var(--content-width);
 	display: flex;
@@ -32,6 +43,10 @@ body {
 	align-items: center;
 	border-bottom-left-radius: var(--default-radius);
 	border-bottom-right-radius: var(--default-radius);
+}
+
+#registered {
+	display: none; /* not displayed by default, only to logged in users */
 }
 
 section {
@@ -78,11 +93,11 @@ td {
 
 dialog {
 	position: fixed;
-	top: 1em;
+	top: 0;
 	right: 0;
 	border: var(--border);
-	border-radius: var(--default-radius);
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+	max-height: 90%;
+	overflow-y: scroll;
 }
 
 dialog::backdrop {
@@ -102,6 +117,7 @@ dialog::backdrop {
 
 #close-btn {
 	border: none;
+	border-radius: var(--default-radius);
 	background-color: var(--fancy-red);
 	color: #fff;
 	font-size: 18px;
