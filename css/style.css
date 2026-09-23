@@ -70,6 +70,7 @@ table {
 	border-spacing: 0;
 	margin: 0;
 	padding: 0;
+	background-color: var(--fancy-white);
 }
 
 th {
@@ -84,11 +85,11 @@ th {
 td {
 	border-bottom: var(--border);
 	padding: 0.5em 1em;
-	background-color: var(--fancy-white);
 }
 
 .highlight {
 	font-weight: bold;
+	background-color: lightgray !important;
 }
 
 dialog {

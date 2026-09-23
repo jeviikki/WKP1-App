@@ -75,7 +75,7 @@ async function renderRestaurants(restaurants) {
 		const row = restaurantRow(restaurant);
 		target.append(row);
 
-		row.addEventListener("click", async function (evt) {
+		row.addEventListener("click", async function (event) {
 			// highlight
 			const menu = await fetchData(
 				`${baseUrl}/daily/${restaurant._id}/en`,

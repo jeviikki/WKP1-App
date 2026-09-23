@@ -44,28 +44,30 @@ const restaurantModal = (restaurant, menu) => {
 				switch (diet) {
 					//sydänmerkitty
 					case "*":
-						return "&#x2764";
+						return "<span title='Healthy choice'> *</span>";
 					//ilmastoystävällinen
 					case "ILM":
-						return "&#x267B";
+						return "<span title='Environmentally friendly'> ILM</span>";
 					//gluteeniton
 					case "G":
-						return "&#x1F33E";
+						return "<span title='Gluten-free'> G</span>";
 					//laktoositon, vähälaktoosinen, maidoton
 					//should be given different icons to avoid having the same emoji multiple times in a diets listing
 					case "L":
+						return "<span title='Lactose-free'> L</span>";
 					case "VL":
+						return "<span title='Low-lactose'> VL</span>";
 					case "M":
-						return "&#x1F42E";
+						return "<span title='Dairy-free'> M</span>";
 					//vegaani
 					case "Veg":
-						return "&#x1F331";
+						return "<span title='Vegan'> Veg</span>";
 					// sisältää allergeeneja
 					case "A":
-						return "&#x1F927";
+						return "<span title='May contain allergens'> A</span>";
 					// sisältää valkosipulia
 					case "VS":
-						return "&#x1F9C4";
+						return "<span title='May contain garlic'> VS</span>";
 					default:
 						return diet;
 				}
