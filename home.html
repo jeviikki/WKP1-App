@@ -2,16 +2,24 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Restaurants App</title>
-  <link rel="stylesheet" href="css/style.css">
-  <script type="module" src="javascript/main.js" defer></script>
+  	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<title>Student Restaurants App</title>
+  	<link rel="stylesheet" href="css/style.css">
+  	<script type="module" src="javascript/main.js" defer></script>
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+	 integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+	 crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+	 integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+	 crossorigin=""></script>
+	 
 </head>
 
 <body>
   <div>
-    <!-- a hero img could be added here -->
+	<!-- a hero img could be added here -->
 	<div id="unregistered" class="hero-img">
 		<p>If you register, you can add a profile picture and choose your preferred restaurant.</p>
 		<!-- TODO these do nothing yet -->
@@ -20,7 +28,7 @@
 			<button>I have an account</button>
 		</div>
 	</div>
-    <div id="registered">
+	<div id="registered">
 		<!-- not implemented yet: once implemented it will fetch registered user data and display it here -->
 		<div id="user-avatar">
 			<!-- user avatar goes here -->
@@ -32,7 +40,7 @@
 			</blockquote>
 		</div>
 	</div>
-    
+	
   </div>
 
   <section>
@@ -40,6 +48,10 @@
 	<div class="section-text">
 
 		<h1>Restaurants</h1>
+
+		<div id="grand-map">
+
+		</div>
 
 		<div class="form-container">
 
@@ -99,7 +111,7 @@
   
   <!-- modal -->
   <dialog>
-    <!-- add restaurant info here when restaurant is clicked -->
+	<!-- add restaurant info here when restaurant is clicked -->
   </dialog>
 </body>
 

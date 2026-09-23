@@ -157,3 +157,9 @@ form {
 	gap: 5px;
 	justify-content: baseline;
 }
+
+#grand-map {
+	width: 100%;
+	height: 300px;
+	margin: 10px auto;
+}

@@ -13,11 +13,22 @@ if (!target || !dialog) {
 	throw new Error("Some elements were not able to be found");
 }
 
+const defLat = 60.25;
+const defLon = 24.84;
+const map = L.map("grand-map").setView([defLat, defLon], 11);
+
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+	maxZoom: 19,
+	attribution:
+		'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+}).addTo(map);
+
 const getRestaurants = async () => {
 	const restaurants = await fetchData(baseUrl);
 	const filteredRestaurants = filterRestaurants(restaurants);
 	const sortedRestaurants = sortRestaurants(filteredRestaurants);
 	renderRestaurants(sortedRestaurants);
+	return sortedRestaurants;
 };
 
 const filterRestaurants = (restaurants) => {
@@ -104,6 +115,20 @@ const renderRestaurants = (restaurants) => {
 	});
 };
 
+const mapRestaurants = (restaurants) => {
+	// right now this will not map all restaurants on map if page is refereshed and only one company is chosen from the filters
+
+	restaurants.forEach((restaurant) => {
+		const marker = L.marker([
+			restaurant.location.coordinates[1],
+			restaurant.location.coordinates[0],
+		]).addTo(map);
+		marker.bindPopup(
+			`<h3>${restaurant.name}</h3><p>${restaurant.address}</p>`,
+		).openPopup;
+	});
+};
+
 // filter button
 const form = document.querySelector("#filter-form");
 form.addEventListener("submit", async (event) => {
@@ -111,4 +136,4 @@ form.addEventListener("submit", async (event) => {
 	await getRestaurants();
 });
 
-await getRestaurants();
+mapRestaurants(await getRestaurants());
