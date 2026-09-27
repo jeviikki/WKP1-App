@@ -193,6 +193,12 @@ form input[type="submit"]:active {
 	border-radius: var(--default-radius);
 }
 
+#grand-map span,
+#grand-map p,
+#grand-map h3 {
+	color: var(--fancy-black);
+}
+
 /* dialog */
 
 dialog {

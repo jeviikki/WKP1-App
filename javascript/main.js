@@ -13,6 +13,8 @@ if (!target || !dialog) {
 	throw new Error("dialog and/or table not found");
 }
 
+// make it so that user can still use program without giving location
+
 const defLat = 60.25;
 const defLon = 24.84;
 const map = L.map("grand-map").setView([defLat, defLon], 11);
@@ -104,6 +106,8 @@ const renderRestaurants = (restaurants) => {
 			});
 			row.classList.add("highlight");
 
+			centerRestaurant(restaurant);
+
 			// dialog
 
 			const menu = await fetchData(
@@ -131,9 +135,19 @@ const mapRestaurants = (restaurants) => {
 			`
 				<h3>${restaurant.name}</h3>
 				<p>${restaurant.address}</p>
+				<p>~<span id="map-location-distance">?</span> km away</p>
 			`,
 		).openPopup;
 	});
+};
+
+const centerRestaurant = (restaurant) => {
+	// when a restaurant is selected, map centers to its location
+	map.setView([
+		restaurant.location.coordinates[1],
+		restaurant.location.coordinates[0],
+	]);
+	map.setZoom(14);
 };
 
 // filter button
