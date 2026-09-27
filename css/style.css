@@ -16,7 +16,7 @@
 }
 
 body {
-	background-color: var(--fancy-white);
+	background-color: var(--fancy-yellow);
 	padding: 0;
 	margin: 0;
 	display: flex;
@@ -36,37 +36,73 @@ h3 {
 	font-family: Cursive-regular;
 }
 
-.hero-img {
-	width: var(--content-width);
-	display: flex;
-	flex-direction: column;
+/* user card */
+
+#user-card {
+	display: none; /* not displayed by default, only to logged in users */
 	align-items: center;
-	border-bottom-left-radius: var(--default-radius);
-	border-bottom-right-radius: var(--default-radius);
+	gap: 10px;
 }
 
-#registered {
-	display: none; /* not displayed by default, only to logged in users */
+#user-speech {
+	border-radius: var(--default-radius);
+	background-color: var(--fancy-white);
+	padding: 15px;
+	height: 100%;
 }
+
+#user-speech p,
+#user-speech span {
+	color: var(--fancy-black);
+}
+
+#user-fav {
+	color: var(--fancy-green) !important;
+}
+
+#user-fav.nofave {
+	color: var(--fancy-red) !important;
+}
+
+#user-avatar {
+	background-color: var(--fancy-white);
+	height: 150px;
+	width: 150px;
+	border-radius: 150px;
+}
+
+/* section */
 
 section {
 	width: var(--content-width);
 	padding: 30px;
-	background-color: var(--fancy-yellow);
+	background-color: var(--fancy-black);
 	border-radius: var(--default-radius);
 	display: flex;
 	flex-direction: column;
+	gap: 20px;
 }
 
-.section-text {
+.section-top {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 }
 
+.section-header {
+	color: var(--fancy-white);
+	margin: 0;
+}
+
+section p,
+section span {
+	color: var(--fancy-white);
+}
+
+/* table */
+
 table {
-	border-collapse: collapse;
 	border-spacing: 0;
 	margin: 0;
 	padding: 0;
@@ -74,12 +110,14 @@ table {
 }
 
 th {
-	background-color: var(--fancy-black);
-	color: #ccc;
+	background-color: var(--fancy-yellow);
+	color: var(--fancy-black);
 	border-bottom: 1px solid black;
 	font-weight: bold;
 	padding: 0.5em 1em;
 	text-align: left;
+	position: sticky;
+	top: 0;
 }
 
 td {
@@ -92,13 +130,80 @@ td {
 	background-color: lightgray !important;
 }
 
+#split {
+	display: flex;
+	gap: 10px;
+	width: 100%;
+}
+
+#split-group {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	width: 50%;
+	position: sticky !important;
+	top: 0;
+}
+
+.form-container {
+	padding: 10px;
+	box-sizing: border-box;
+	background-color: var(--fancy-white);
+	border-radius: var(--default-radius);
+}
+
+form {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+form input[type="submit"] {
+	font-size: 18px;
+	padding: 10px;
+	background-color: var(--fancy-blue);
+	color: var(--fancy-white);
+	border: none;
+	border-radius: var(--default-radius);
+}
+
+form input[type="submit"]:hover {
+	background-color: var(--fancy-green);
+	cursor: pointer;
+}
+
+form input[type="submit"]:active {
+	background-color: var(--fancy-blue);
+}
+
+.filtering-option {
+	width: 50%;
+	height: 100%;
+	justify-content: stretch;
+}
+
+.checkbox-group {
+	display: flex;
+	gap: 5px;
+	justify-content: baseline;
+}
+
+#grand-map {
+	width: 100%;
+	height: 300px;
+	border-radius: var(--default-radius);
+}
+
+/* dialog */
+
 dialog {
 	position: fixed;
 	top: 0;
 	right: 0;
 	border: var(--border);
+	border-radius: var(--default-radius);
 	max-height: 90%;
 	overflow-y: scroll;
+	padding: 0;
 }
 
 dialog::backdrop {
@@ -110,10 +215,20 @@ dialog::backdrop {
 	justify-content: space-between;
 	align-items: flex-end;
 	gap: 10px;
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	background-color: white;
+	padding: 10px;
 }
 
 .dialog-top h2 {
 	margin: 0;
+}
+
+.dialog-body {
+	padding: 30px;
+	padding-top: 0;
 }
 
 #close-btn {
@@ -126,40 +241,23 @@ dialog::backdrop {
 	cursor: pointer;
 }
 
-#open-filters {
-	border: none;
-	border-radius: var(--default-radius);
-	background-color: var(--fancy-red);
-	color: #fff;
-	font-size: 18px;
-	padding: 10px;
-	margin-bottom: 10px;
+footer {
+	background-color: var(--fancy-black);
+	width: 100%;
 }
 
-#open-filters:hover {
-	cursor: pointer;
-}
-
-.form-container {
-	margin-bottom: 10px;
-	padding: 10px;
-	background-color: var(--fancy-white);
-	border-radius: var(--default-radius);
-}
-
-form {
+.footer-container {
 	display: flex;
+	justify-content: center;
+	align-items: center;
 	gap: 10px;
 }
 
-.checkbox-group {
-	display: flex;
-	gap: 5px;
-	justify-content: baseline;
+.footer-link p {
+	color: #ccc;
+	text-decoration: none;
 }
 
-#grand-map {
-	width: 100%;
-	height: 300px;
-	margin: 10px auto;
+.footer-img {
+	height: 1em;
 }

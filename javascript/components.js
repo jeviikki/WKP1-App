@@ -1,7 +1,7 @@
 const restaurantRow = (restaurant) => {
-	const { name, address = "Unknown", city, company } = restaurant;
+	const { name, address = "Unknown", company } = restaurant;
 	const tr = document.createElement("tr");
-	tr.innerHTML = `<td>${name}</td><td>${address}</td><td>${city}</td><td>${company}</td>`;
+	tr.innerHTML = `<td>${name}</td><td>${address}</td><td>${company}</td>`;
 	return tr;
 };
 
@@ -83,18 +83,13 @@ const restaurantModal = (restaurant, menu) => {
 			<button id="close-btn">X</button>
 		</div>
 
-		<div>
-			<div>
-				<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
-				<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
-				<span id="place-company"><br><b>Company:</b> ${company}</p></span>
-			</div>
-			<div id="map">
-				<!-- MAP HERE -->
-			</div>
-		</div>
-		<h2>Today's menu</h2>
-		${menuHtml}`;
+		<div class="dialog-body">
+			<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
+			<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
+			<span id="place-company"><br><b>Company:</b> ${company}</p></span>
+		<h2>Menu</h2>
+		${menuHtml}
+		</div>`;
 	return dialogHtml;
 };
 

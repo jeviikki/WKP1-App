@@ -10,12 +10,16 @@ const target = document.querySelector("table");
 const dialog = document.querySelector("dialog");
 
 if (!target || !dialog) {
-	throw new Error("Some elements were not able to be found");
+	throw new Error("dialog and/or table not found");
 }
 
 const defLat = 60.25;
 const defLon = 24.84;
 const map = L.map("grand-map").setView([defLat, defLon], 11);
+
+if (!map) {
+	throw new Error("map is missing");
+}
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 	maxZoom: 19,
@@ -45,12 +49,11 @@ const filterRestaurants = (restaurants) => {
 		filter2 = filters[1].value || "";
 	}
 
-	const filtered = restaurants.filter(
+	data = restaurants.filter(
 		(restaurant) => restaurant.company.toLowerCase() == filter1 || filter2,
 	);
 
 	deleteRows();
-	data = filtered;
 	return data;
 };
 
@@ -95,14 +98,17 @@ const renderRestaurants = (restaurants) => {
 
 		row.addEventListener("click", async () => {
 			// highlight
-			const menu = await fetchData(
-				`${baseUrl}/daily/${restaurant._id}/en`,
-			);
 
 			document.querySelectorAll(".highlight").forEach((highlighted) => {
 				highlighted.classList.remove("highlight");
 			});
 			row.classList.add("highlight");
+
+			// dialog
+
+			const menu = await fetchData(
+				`${baseUrl}/daily/${restaurant._id}/en`,
+			);
 
 			dialog.innerHTML = restaurantModal(restaurant, menu);
 			dialog.showModal();
@@ -116,15 +122,16 @@ const renderRestaurants = (restaurants) => {
 };
 
 const mapRestaurants = (restaurants) => {
-	// right now this will not map all restaurants on map if page is refereshed and only one company is chosen from the filters
-
 	restaurants.forEach((restaurant) => {
 		const marker = L.marker([
 			restaurant.location.coordinates[1],
 			restaurant.location.coordinates[0],
 		]).addTo(map);
 		marker.bindPopup(
-			`<h3>${restaurant.name}</h3><p>${restaurant.address}</p>`,
+			`
+				<h3>${restaurant.name}</h3>
+				<p>${restaurant.address}</p>
+			`,
 		).openPopup;
 	});
 };

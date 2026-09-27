@@ -18,101 +18,124 @@
 </head>
 
 <body>
+
   <div>
-	<!-- a hero img could be added here -->
-	<div id="unregistered" class="hero-img">
-		<p>If you register, you can add a profile picture and choose your preferred restaurant.</p>
-		<!-- TODO these do nothing yet -->
-		<div>
-			<button>Register now</button>
-			<button>I have an account</button>
-		</div>
-	</div>
-	<div id="registered">
-		<!-- not implemented yet: once implemented it will fetch registered user data and display it here -->
-		<div id="user-avatar">
-			<!-- user avatar goes here -->
-		</div>
-		<div id="user-speech">
-			<!-- a script will fill out this information -->
-			<blockquote>
-				<p><span id="user-name">This user</span>'s favorite restaurant is <span id="user-fav">none of them</span>!</p>
-			</blockquote>
-		</div>
-	</div>
 	
   </div>
 
   <section>
 
-	<div class="section-text">
+	<div class="section-top">
 
-		<h1>Restaurants</h1>
+		<h1 class="section-header" id="start">Student Restaurant App</h1>
 
-		<div id="grand-map">
-
+		<div id="user-card">
+			<!-- not implemented yet: once implemented it will fetch registered user data and display it here -->
+			<img id="user-avatar" src="images/user-svgrepo-com.svg">
+			<div id="user-speech">
+				<!-- a script will fill out this information -->
+				<blockquote>
+					<p><span id="user-name">This user</span>'s favorite restaurant is <span id="user-fav" class="nofave">none of them</span>.</p>
+				</blockquote>
+			</div>
 		</div>
 
-		<div class="form-container">
+		<p>Browse student restaurants provided by Sodexo and Compass Group all across Finland.</p>
+		<p>You can click a restaurant on the map to see the menu or use the table to find your desired restaurants.</p>
 
-			<h2>Filters</h2>
+		<div>
+			<p id="unregistered-text">Make an account to choose a favorite restaurant to make it easier to find, as well as customize your profile.</p>
+			<button id="login-btn">Register</button>
+			<button id="login-btn">I have an account</button>
+		</div>
+		
+		<h2 class="section-header">Browse Restaurants</h2>
 
-			<form id="filter-form">
+		<div id="split">
+			
+			<table>
+				<tr class="tableheader">
+				<th><span class="table-icon"></span>Name</th>
+				<th><span class="table-icon"></span>Address</th>
+				<th><span class="table-icon"></span>Company</th>
+				</tr>
+				<!-- add restaurants here -->
+			</table>
 
-				<!-- Sort by... -->
-				<div class="filtering-option">
-				<label for="order">Sort by...</label>
-				<select name="order" id="order">
-					<option value="">-- Select a sorting method --</option>
-					<option value="name">Alphabetical (name)</option>
-					<option value="address">Alphabetical (address)</option>
-					<!-- TODO <option value="location">Location</option> -->
-				</select>
+			<div id="split-group">
+
+				<div class="form-container">
+
+					<h2 id="filters">Filters</h2>
+
+					<form id="filter-form">
+
+						<!-- Sort by... -->
+						<div class="filtering-option">
+							<label for="order">Sort by...</label>
+							<select name="order" id="order">
+								<option value="">-- Select a sorting method --</option>
+								<option value="name">Alphabetical (name)</option>
+								<option value="address">Alphabetical (address)</option>
+								<!-- TODO <option value="location">Location</option> -->
+							</select>
+						</div>
+						
+						<!-- Filter companies -->
+						<div class="filtering-option">
+							<label for="company">Show me restaurants for...</label>
+							<div class="checkbox-group">
+								<!-- both checked by default -->
+								<input type="checkbox" id="sodexo" name="company" value="sodexo" checked><label for="sodexo">Sodexo</label>
+								<input type="checkbox" id="compass-group" name="company" value="compass group" checked><label for="compass-group">Compass Group</label>
+							</div>
+						</div>
+						
+						<!-- Weekly or daily menus (NOT IMPLEMENTED YET) -->
+						<div class="filtering-option">
+							<label for="menu-type">Menu types</label>
+							<div class="checkbox-group">
+								<!-- daily checked by default -->
+								<input type="radio" id="daily" name="menu-type" value="daily" checked><label for="daily">Daily</label>
+								<input type="radio" id="weekly" name="menu-type" value="weekly group"><label for="weekly">Weekly</label>
+							</div>
+						</div>
+
+						<input id="filter-btn" type="submit" value="Filter">
+
+					</form>
+
 				</div>
-				
-				<!-- Filter companies -->
-				<div class="filtering-option">
-					<label for="company">Show me restaurants for...</label>
-					<div class="checkbox-group">
-						<!-- both checked by default -->
-						<input type="checkbox" id="sodexo" name="company" value="sodexo" checked><label for="sodexo">Sodexo</label>
-						<input type="checkbox" id="compass-group" name="company" value="compass group" checked><label for="compass-group">Compass Group</label>
-					</div>
-				</div>
-				
-				<!-- Weekly or daily menus (NOT IMPLEMENTED YET) -->
-				<div class="filtering-option">
-					<label for="menu-type">Menu types</label>
-					<div class="checkbox-group">
-						<!-- daily checked by default -->
-						<input type="radio" id="daily" name="menu-type" value="daily" checked><label for="daily">Daily</label>
-						<input type="radio" id="weekly" name="menu-type" value="weekly group"><label for="weekly">Weekly</label>
-					</div>
+
+				<div id="grand-map">
+					<!-- map goes here -->
 				</div>
 
-				<input id="filter-btn" type="submit" value="Filter">
-
-			</form>
+			</div>
 
 		</div>
 		
 	</div>
 
-	<table>
-		<tr class="tableheader">
-		<th><span class="table-icon"></span>Name</th>
-		<th><span class="table-icon"></span>Address</th>
-		<th><span class="table-icon"></span>City</th>
-		<th><span class="table-icon"></span>Company</th>
-		</tr>
-		<!-- add restaurants here -->
-	</table>
+	
   </section>
   
   <!-- modal -->
   <dialog>
 	<!-- add restaurant info here when restaurant is clicked -->
   </dialog>
+
+  	<footer>
+		<div class="footer-container">
+			
+			<img src="images/github-color-svgrepo-com.svg" class="footer-img">
+
+			<a href="https://github.com/jeviikki/WKP1-App" class="footer-link">
+				<p>Lähdekoodi GitHubissa</p>
+			</a>
+
+		</div>
+	</footer>
 </body>
 
 </html>
