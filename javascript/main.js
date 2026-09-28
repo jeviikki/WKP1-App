@@ -132,16 +132,23 @@ const renderRestaurants = (restaurants) => {
 };
 
 const calcRestaurantDistance = (restaurants) => {
-	for (const place of restaurants) {
-		const placeLon = place.location.coordinates[0];
-		const placeLat = place.location.coordinates[1];
-		place.distance = Math.sqrt((userLat-placeLat)**2 + (userLon-placeLon)**2);
+
+	// calculates distance between user location and restaurant location and saves it for later use
+	// formula is not 100% accurate however
+
+	for (const restaurant of restaurants) {
+		const resLon = restaurant.location.coordinates[0];
+		const resLat = restaurant.location.coordinates[1];
+		restaurant.distance = Math.sqrt((userLat-resLat)**2 + (userLon-resLon)**2);
 	}
 	return restaurants;
 }
 
 const mapRestaurants = (restaurants) => {
 	restaurants.forEach((restaurant) => {
+
+		const resLon = restaurant.location.coordinates[0];
+		const resLat = restaurant.location.coordinates[1];
 
 		// marker & popup
 
