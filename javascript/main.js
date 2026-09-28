@@ -142,12 +142,6 @@ const calcRestaurantDistance = (restaurants) => {
 
 const mapRestaurants = (restaurants) => {
 	restaurants.forEach((restaurant) => {
-		//distance calc
-
-		const resLat = restaurant.location.coordinates[1];
-		const resLon = restaurant.location.coordinates[0];
-		console.log(resLat, resLon)
-		const distance = Math.sqrt(((userLat-resLat)**2) + ((userLon-resLon)**2)).toFixed(2);
 
 		// marker & popup
 
