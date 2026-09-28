@@ -13,11 +13,16 @@ if (!target || !dialog) {
 	throw new Error("dialog and/or table not found");
 }
 
-// make it so that user can still use program without giving location
+// TODO: make it so that user can still use program without giving location
 
-const defLat = 60.25;
-const defLon = 24.84;
+const defLat = 60.223184;
+const defLon = 24.7586024;
 const map = L.map("grand-map").setView([defLat, defLon], 11);
+
+// temporary until location detection is implemented
+
+let userLat = defLat;
+let userLon = defLon;
 
 if (!map) {
 	throw new Error("map is missing");
@@ -31,7 +36,8 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 const getRestaurants = async () => {
 	const restaurants = await fetchData(baseUrl);
-	const filteredRestaurants = filterRestaurants(restaurants);
+	const calculatedRestaurants = calcRestaurantDistance(restaurants);
+	const filteredRestaurants = filterRestaurants(calculatedRestaurants);
 	const sortedRestaurants = sortRestaurants(filteredRestaurants);
 	renderRestaurants(sortedRestaurants);
 	return sortedRestaurants;
@@ -80,7 +86,7 @@ const sortRestaurants = (restaurants) => {
 			break;
 		case "location":
 			// todo
-			restaurants.sort((a, b) => a.name > b.name);
+			restaurants.sort((a,b) => a.distance - b.distance);
 			console.log("location sort");
 			break;
 		default:
@@ -125,17 +131,31 @@ const renderRestaurants = (restaurants) => {
 	});
 };
 
+const calcRestaurantDistance = (restaurants) => {
+	for (const place of restaurants) {
+		const placeLon = place.location.coordinates[0];
+		const placeLat = place.location.coordinates[1];
+		place.distance = Math.sqrt((userLat-placeLat)**2 + (userLon-placeLon)**2);
+	}
+	return restaurants;
+}
+
 const mapRestaurants = (restaurants) => {
 	restaurants.forEach((restaurant) => {
-		const marker = L.marker([
-			restaurant.location.coordinates[1],
-			restaurant.location.coordinates[0],
-		]).addTo(map);
+		//distance calc
+
+		const resLat = restaurant.location.coordinates[1];
+		const resLon = restaurant.location.coordinates[0];
+		console.log(resLat, resLon)
+		const distance = Math.sqrt(((userLat-resLat)**2) + ((userLon-resLon)**2)).toFixed(2);
+
+		// marker & popup
+
+		const marker = L.marker([resLat, resLon]).addTo(map);
 		marker.bindPopup(
 			`
 				<h3>${restaurant.name}</h3>
 				<p>${restaurant.address}</p>
-				<p>~<span id="map-location-distance">?</span> km away</p>
 			`,
 		).openPopup;
 	});
@@ -143,11 +163,13 @@ const mapRestaurants = (restaurants) => {
 
 const centerRestaurant = (restaurant) => {
 	// when a restaurant is selected, map centers to its location
-	map.setView([
-		restaurant.location.coordinates[1],
-		restaurant.location.coordinates[0],
-	]);
-	map.setZoom(14);
+	map.setView(
+		[
+			restaurant.location.coordinates[1],
+			restaurant.location.coordinates[0],
+		],
+		14,
+	);
 };
 
 // filter button

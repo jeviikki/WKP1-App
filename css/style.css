@@ -141,7 +141,8 @@ td {
 	flex-direction: column;
 	gap: 10px;
 	width: 50%;
-	position: sticky !important;
+	height: 100%;
+	position: sticky;
 	top: 0;
 }
 
