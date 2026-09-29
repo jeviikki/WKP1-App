@@ -1,10 +1,12 @@
 import { restaurantModal, restaurantRow } from "./components.js";
-import { baseUrl } from "./variables.js";
+import { baseUrl, defLat, defLon } from "./variables.js";
 import { fetchData } from "./utils.js";
 
 // clean up code and turn into typescript
 
 ("use strict");
+
+// table and dialog
 
 const target = document.querySelector("table");
 const dialog = document.querySelector("dialog");
@@ -13,16 +15,11 @@ if (!target || !dialog) {
 	throw new Error("dialog and/or table not found");
 }
 
-// TODO: make it so that user can still use program without giving location
+// map stuff
 
-const defLat = 60.223184;
-const defLon = 24.7586024;
-const map = L.map("grand-map").setView([defLat, defLon], 11);
+let userLat = defLat, userLon = defLon;
 
-// temporary until location detection is implemented
-
-let userLat = defLat;
-let userLon = defLon;
+const map = L.map("grand-map").setView([userLat, userLon], 11);
 
 if (!map) {
 	throw new Error("map is missing");
@@ -32,6 +29,13 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 	maxZoom: 19,
 	attribution:
 		'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+}).addTo(map);
+
+const you = L.circle([userLat, userLon], {
+	color: 'red',
+	fillColor: '#f03',
+	fillOpacity: 0.5,
+	radius: 500,
 }).addTo(map);
 
 const getRestaurants = async () => {
@@ -85,7 +89,6 @@ const sortRestaurants = (restaurants) => {
 			console.log("address sort");
 			break;
 		case "location":
-			// todo
 			restaurants.sort((a,b) => a.distance - b.distance);
 			console.log("location sort");
 			break;
@@ -173,11 +176,44 @@ const centerRestaurant = (restaurant) => {
 	);
 };
 
+const centerUser = () => {
+
+	// centers map to user location
+	
+	map.setView([userLat, userLon], 11);
+
+	// also moves user from default location
+
+	you.setLatLng([userLat, userLon]);
+}
+
 // filter button
 const form = document.querySelector("#filter-form");
 form.addEventListener("submit", async (event) => {
 	event.preventDefault();
 	await getRestaurants();
 });
+
+// getting user location
+
+function success(pos){
+	userLat = pos.coords.latitude;
+	userLon = pos.coords.longitude;
+	centerUser();
+} 
+function error(err){
+	console.warn(`Error ${err.code}: ${err.message}`)
+	alert(`Error ${err.code}: ${err.message} \nThe app will assume you are at Karamalmi Campus.`);
+}
+navigator.geolocation.getCurrentPosition(
+	success,
+	error,
+	{
+		enableHighAccuracy: false,
+		timeout: 5000,
+	},
+);
+
+centerUser();
 
 mapRestaurants(await getRestaurants());
