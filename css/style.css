@@ -71,6 +71,21 @@ h3 {
 	border-radius: 150px;
 }
 
+/* login buttons */
+.big-btn {
+	border: none;
+	border-radius: var(--default-radius);
+	font-size: 18px;
+	padding: 10px;
+	color: var(--fancy-black);
+}
+#register-btn {
+	background-color: var(--fancy-yellow);
+}
+#login-btn {
+	background-color: var(--fancy-white);
+}
+
 /* section */
 
 section {
@@ -107,6 +122,7 @@ table {
 	margin: 0;
 	padding: 0;
 	background-color: var(--fancy-white);
+	width: 65%;
 }
 
 th {
@@ -140,6 +156,7 @@ td {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
+	flex-grow: 1;
 	width: 50%;
 	height: 100%;
 	position: sticky;
@@ -158,13 +175,14 @@ form {
 	flex-wrap: wrap;
 }
 
+form select {
+	padding: 5px;
+	font-size: 1em;
+}
+
 form input[type="submit"] {
-	font-size: 18px;
-	padding: 10px;
 	background-color: var(--fancy-blue);
 	color: var(--fancy-white);
-	border: none;
-	border-radius: var(--default-radius);
 }
 
 form input[type="submit"]:hover {
