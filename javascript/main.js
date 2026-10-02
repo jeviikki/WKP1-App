@@ -9,9 +9,9 @@ import { fetchData } from "./utils.js";
 // table and dialog
 
 const target = document.querySelector("table");
-const dialog = document.querySelector("dialog");
+const restaurantDialog = document.querySelector("#restaurant-dialog");
 
-if (!target || !dialog) {
+if (!target || !restaurantDialog) {
 	throw new Error("dialog and/or table not found");
 }
 
@@ -123,12 +123,12 @@ const renderRestaurants = (restaurants) => {
 				`${baseUrl}/daily/${restaurant._id}/en`,
 			);
 
-			dialog.innerHTML = restaurantModal(restaurant, menu);
-			dialog.showModal();
+			restaurantDialog.innerHTML = restaurantModal(restaurant, menu);
+			restaurantDialog.showModal();
 
-			const closeBtn = document.querySelector("#close-btn");
+			const closeBtn = document.querySelector("#close-restaurant-btn");
 			closeBtn.addEventListener("click", () => {
-				dialog.close();
+				restaurantDialog.close();
 			});
 		});
 	});
@@ -186,6 +186,40 @@ const centerUser = () => {
 
 	you.setLatLng([userLat, userLon]);
 }
+
+//open register dialog
+const registerBtn = document.querySelector("#register-dialog-btn");
+
+registerBtn.addEventListener("click", async () => {
+
+	const registerDialog = document.querySelector("#register-dialog");
+
+	registerDialog.showModal();
+
+	const closeRegisterBtn = document.querySelector("#close-register-btn");
+	closeRegisterBtn.addEventListener("click", () => {
+		registerDialog.close();
+	});
+
+});
+
+//open login dialog
+const loginBtn = document.querySelector("#login-dialog-btn");
+
+loginBtn.addEventListener("click", async () => {
+
+	const loginDialog = document.querySelector("#login-dialog");
+
+	loginDialog.showModal();
+
+	const closeLoginBtn = document.querySelector("#close-login-btn");
+	closeLoginBtn.addEventListener("click", () => {
+		loginDialog.close();
+	});
+
+});
+
+
 
 // filter button
 const form = document.querySelector("#filter-form");

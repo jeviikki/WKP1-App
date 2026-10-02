@@ -80,7 +80,7 @@ const restaurantModal = (restaurant, menu) => {
 	const dialogHtml = `
 		<div class="dialog-top">
 			<h2>${name}</h2>
-			<button id="close-btn">X</button>
+			<button id="close-restaurant-btn" class="close-btn">X</button>
 		</div>
 
 		<div class="dialog-body">

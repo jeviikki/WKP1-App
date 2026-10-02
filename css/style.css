@@ -79,10 +79,13 @@ h3 {
 	padding: 10px;
 	color: var(--fancy-black);
 }
-#register-btn {
+.big-btn:hover {
+	cursor: pointer;
+}
+#register-dialog-btn {
 	background-color: var(--fancy-yellow);
 }
-#login-btn {
+#login-dialog-btn {
 	background-color: var(--fancy-white);
 }
 
@@ -256,7 +259,7 @@ dialog::backdrop {
 	padding-top: 0;
 }
 
-#close-btn {
+.close-btn {
 	border: none;
 	border-radius: var(--default-radius);
 	background-color: var(--fancy-red);
@@ -264,6 +267,12 @@ dialog::backdrop {
 	font-size: 18px;
 	padding: 10px;
 	cursor: pointer;
+}
+
+/* login dialog */
+.login-form {
+	flex-direction: column;
+	gap: 10px;
 }
 
 footer {
