@@ -52,7 +52,6 @@ const restaurantModal = (restaurant, menu) => {
 					case "G":
 						return "<span title='Gluten-free'> G</span>";
 					//laktoositon, vähälaktoosinen, maidoton
-					//should be given different icons to avoid having the same emoji multiple times in a diets listing
 					case "L":
 						return "<span title='Lactose-free'> L</span>";
 					case "VL":
