@@ -179,68 +179,70 @@
 				<button id="close-register-btn" class="close-btn">X</button>
 			</div>
 
-			<p>
-				Make an account to use Student Restaurant App at its full
-				potential.
-			</p>
+			<div class="dialog-body">
+				<p>
+					Make an account to use Student Restaurant App at its full
+					potential.
+				</p>
+				<form class="login-form">
+					<div class="login-section">
+						<label for="register-username">
+							Username<span
+								title="Required; Minimum 3 characters"
+								class="asterisk"
+								>*</span
+							>:
+						</label>
+						<input
+							type="text"
+							id="register-username"
+							name="register-username"
+							minlength="3"
+							required
+						/>
+					</div>
 
-			<form class="login-form">
-				<div class="login-section">
-					<label for="register-username">
-						Username<span title="Required; Minimum 3 characters"
-							>*</span
-						>:
-					</label>
-					<input
-						type="text"
-						id="register-username"
-						name="register-username"
-						minlength="3"
-						required
-					/>
-				</div>
+					<div class="login-section">
+						<label for="register-email">
+							Email<span title="Required" class="asterisk">*</span
+							>:
+						</label>
+						<input
+							type="email"
+							id="register-email"
+							name="register-email"
+							pattern=".+@metropolia\.fi$"
+							required
+						/>
+					</div>
 
-				<div class="login-section">
-					<label for="register-email">
-						Email<span title="Required">*</span>:
-					</label>
-					<input
-						type="email"
-						id="register-email"
-						name="register-email"
-						pattern=".+@metropolia\.fi$"
-						required
-					/>
-				</div>
+					<div class="login-section">
+						<label for="register-password">
+							Password<span
+								title="Required; Minimum 8 characters, Must include big and small letters, Must include a number"
+								class="asterisk"
+								>*</span
+							>:
+						</label>
+						<input
+							type="password"
+							id="register-password"
+							name="register-password"
+							minlength="8"
+							pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+							required
+						/>
+					</div>
 
-				<div class="login-section">
-					<label for="register-password">
-						Password<span
-							title="Required; 
-							Must include big and small letters; 
-							Must include a number; 
-							Minimum 8 characters"
-							>*</span
-						>:
-					</label>
-					<input
-						type="password"
-						id="register-password"
-						name="register-password"
-						minlength="8"
-						pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-						required
-					/>
-				</div>
-
-				<!-- does nothing at the moment 
-				<input
-					type="submit"
-					class="big-btn"
-					value="Register account"
-					id="register-btn"
-				/>-->
-			</form>
+					<!-- does nothing at the moment 
+						<input
+							type="submit"
+							class="big-btn"
+							value="Register account"
+							id="register-btn"
+						/>-->
+				</form>
+			</div>
 		</dialog>
 
 		<!-- login dialog -->
@@ -251,37 +253,39 @@
 				<button id="close-login-btn" class="close-btn">X</button>
 			</div>
 
-			<p>Log in with an existing account.</p>
+			<div class="dialog-body">
+				<p>Log in with an existing account.</p>
 
-			<form class="login-form">
-				<div class="login-section">
-					<label for="login-username"> Username:</label>
-					<input
-						type="text"
-						id="login-username"
-						name="login-username"
-						required
-					/>
-				</div>
+				<form class="login-form">
+					<div class="login-section">
+						<label for="login-username"> Username:</label>
+						<input
+							type="text"
+							id="login-username"
+							name="login-username"
+							required
+						/>
+					</div>
 
-				<div class="login-section">
-					<label for="login-password"> Password:</label>
-					<input
-						type="password"
-						id="login-password"
-						name="login-password"
-						required
-					/>
-				</div>
+					<div class="login-section">
+						<label for="login-password"> Password:</label>
+						<input
+							type="password"
+							id="login-password"
+							name="login-password"
+							required
+						/>
+					</div>
 
-				<!-- does nothing at the moment 
-				<input
-					type="submit"
-					class="big-btn"
-					value="Log in"
-					id="login-btn"
-				/>-->
-			</form>
+					<!-- does nothing at the moment 
+						<input
+							type="submit"
+							class="big-btn"
+							value="Log in"
+							id="login-btn"
+						/>-->
+				</form>
+			</div>
 		</dialog>
 
 		<footer>

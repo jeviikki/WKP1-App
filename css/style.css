@@ -245,6 +245,20 @@ dialog::backdrop {
 	background: rgba(0, 0, 0, 0.5);
 }
 
+dialog input {
+	padding: 10px;
+	border-radius: 10px;
+	border: 2px solid;
+}
+
+dialog input:invalid {
+	border-color: var(--fancy-red);
+}
+
+dialog input:valid {
+	border-color: var(--fancy-green);
+}
+
 .dialog-top {
 	display: flex;
 	justify-content: space-between;
@@ -281,6 +295,16 @@ dialog::backdrop {
 .login-form {
 	flex-direction: column;
 	gap: 10px;
+	margin: 10px;
+}
+
+.asterisk {
+	color: var(--fancy-red);
+}
+
+.asterisk:hover {
+	cursor: help;
+	text-decoration: dotted;
 }
 
 /* footer */
