@@ -36,7 +36,7 @@ h3 {
 	font-family: Cursive-regular;
 }
 
-/* user card */
+/* logged in user card */
 
 #user-card {
 	display: none; /* not displayed by default, only to logged in users */
@@ -72,6 +72,7 @@ h3 {
 }
 
 /* login buttons */
+
 .big-btn {
 	border: none;
 	border-radius: var(--default-radius);
@@ -149,6 +150,8 @@ td {
 	background-color: lightgray !important;
 }
 
+/* split view */
+
 #split {
 	display: flex;
 	gap: 10px;
@@ -165,6 +168,8 @@ td {
 	position: sticky;
 	top: 0;
 }
+
+/* filter */
 
 .form-container {
 	padding: 10px;
@@ -205,9 +210,11 @@ form input[type="submit"]:active {
 
 .checkbox-group {
 	display: flex;
-	gap: 5px;
+	gap: 10px;
 	justify-content: baseline;
 }
+
+/* map */
 
 #grand-map {
 	width: 100%;
@@ -270,10 +277,13 @@ dialog::backdrop {
 }
 
 /* login dialog */
+
 .login-form {
 	flex-direction: column;
 	gap: 10px;
 }
+
+/* footer */
 
 footer {
 	background-color: var(--fancy-black);
