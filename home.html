@@ -42,17 +42,15 @@
 				</div>
 
 				<p>Browse student restaurants provided by Sodexo and Compass Group all across Finland.</p>
-				<p>
-					You can click a restaurant on the map to see the menu or use the table to find your desired
-					restaurants.
-				</p>
+
+				<p>You can filter restaurants to your liking by using the filtering options.</p>
 
 				<div id="unregistered-section">
 					<p>
-						Make an account to choose a favorite restaurant to make it easier to find, as well as customize
-						your profile.
+						Sign up to choose a favorite restaurant to make it easier to find as well as customize your
+						profile.
 					</p>
-					<button id="register-dialog-btn" class="big-btn">Register</button>
+					<button id="register-dialog-btn" class="big-btn">Sign up</button>
 					<button id="login-dialog-btn" class="big-btn">I have an account</button>
 				</div>
 
@@ -65,7 +63,7 @@
 							<th><span class="table-icon"></span>Address</th>
 							<th><span class="table-icon"></span>Company</th>
 						</tr>
-						<!-- add restaurants here -->
+						<!-- restaurants get listed here -->
 					</table>
 
 					<div id="split-group">
@@ -80,7 +78,7 @@
 										<option value="">-- Select a sorting method --</option>
 										<option value="name">Alphabetical (name)</option>
 										<option value="address">Alphabetical (address)</option>
-										<option value="location">Location</option>
+										<option value="location">Nearest</option>
 									</select>
 								</div>
 
@@ -106,19 +104,16 @@
 									</div>
 								</div>
 
-								<!-- Weekly or daily menus (NOT IMPLEMENTED YET) -->
+								<!-- Weekly or daily menus -->
 								<div class="filtering-option">
 									<label for="menu-type">Menu types</label>
 									<div class="checkbox-group">
-										<!-- daily checked by default -->
-										<input type="radio" id="daily" name="menu-type" value="daily" checked /><label
-											for="daily"
-											>Daily</label
-										>
-										<input type="radio" id="weekly" name="menu-type" value="weekly" /><label
-											for="weekly"
-											>Weekly</label
-										>
+										<!-- daily selected by default -->
+										<input type="radio" id="daily" name="menu-type" value="daily" checked />
+										<label for="daily">Daily</label>
+
+										<input type="radio" id="weekly" name="menu-type" value="weekly" />
+										<label for="weekly">Weekly</label>
 									</div>
 								</div>
 
@@ -141,7 +136,7 @@
 
 		<dialog id="register-dialog">
 			<div class="dialog-top">
-				<h2>Register account</h2>
+				<h2>Sign up</h2>
 				<button id="close-register-btn" class="close-btn">X</button>
 			</div>
 
