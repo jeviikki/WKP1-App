@@ -126,7 +126,6 @@ table {
 	margin: 0;
 	padding: 0;
 	background-color: var(--fancy-white);
-	width: 65%;
 }
 
 th {
@@ -158,12 +157,15 @@ td {
 	width: 100%;
 }
 
+#split table {
+	min-width: 600px;
+}
+
 #split-group {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 	flex-grow: 1;
-	width: 50%;
 	height: 100%;
 	position: sticky;
 	top: 0;

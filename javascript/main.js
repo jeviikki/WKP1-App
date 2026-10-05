@@ -6,6 +6,9 @@ import { fetchData } from "./utils.js";
 
 ("use strict");
 
+let sortType = "name";
+let menuType = "daily";
+
 // table and dialog
 
 const target = document.querySelector("table");
@@ -119,11 +122,19 @@ const renderRestaurants = (restaurants) => {
 
 			// dialog
 
-			const menu = await fetchData(
-				`${baseUrl}/daily/${restaurant._id}/en`,
-			);
+			let menu;
 
-			restaurantDialog.innerHTML = restaurantModal(restaurant, menu);
+			if (menuType == "daily") {
+				menu = await fetchData(
+					`${baseUrl}/daily/${restaurant._id}/en`,
+				);
+			} else {
+				menu = await fetchData(
+					`${baseUrl}/weekly/${restaurant._id}/en`,
+				);
+			}
+
+			restaurantDialog.innerHTML = restaurantModal(restaurant, menu, menuType);
 			restaurantDialog.showModal();
 
 			const closeBtn = document.querySelector("#close-restaurant-btn");
@@ -219,12 +230,20 @@ loginBtn.addEventListener("click", async () => {
 
 });
 
-
+const updateFilters = () => {
+	const formData = new FormData(form);
+	const data = Object.fromEntries(formData);
+	console.log(data);
+	sortType = data.order;
+	menuType = data["menu-type"];
+	console.log(sortType, menuType);
+}
 
 // filter button
 const form = document.querySelector("#filter-form");
 form.addEventListener("submit", async (event) => {
 	event.preventDefault();
+	updateFilters();
 	await getRestaurants();
 });
 
