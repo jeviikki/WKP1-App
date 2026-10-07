@@ -1,8 +1,7 @@
 import { restaurantModal, restaurantRow } from "./components.js";
 import { baseUrl, defLat, defLon } from "./variables.js";
 import { fetchData } from "./utils.js";
-
-// clean up code and turn into typescript
+import { Restaurant } from "./types.js";
 
 ("use strict");
 
@@ -11,8 +10,8 @@ let menuType = "daily";
 
 // table and dialog
 
-const target = document.querySelector("table");
-const restaurantDialog = document.querySelector("#restaurant-dialog");
+const target = document.querySelector("table") as HTMLTableElement;
+const restaurantDialog = document.querySelector("#restaurant-dialog") as HTMLDialogElement;
 
 if (!target || !restaurantDialog) {
 	throw new Error("dialog and/or table not found");
@@ -50,7 +49,7 @@ const getRestaurants = async () => {
 	return sortedRestaurants;
 };
 
-const filterRestaurants = (restaurants) => {
+const filterRestaurants = (restaurants: Object[]) => {
 	let data;
 	let filter1 = "";
 	let filter2 = "";
@@ -65,7 +64,7 @@ const filterRestaurants = (restaurants) => {
 	}
 
 	data = restaurants.filter(
-		(restaurant) => restaurant.company.toLowerCase() == filter1 || filter2,
+		(restaurant: Restaurant) => restaurant.company.toLowerCase() == filter1 || filter2,
 	);
 
 	deleteRows();
@@ -79,8 +78,8 @@ const deleteRows = () => {
 	});
 };
 
-const sortRestaurants = (restaurants) => {
-	const sort = document.querySelector("#order");
+const sortRestaurants = (restaurants: Object[]) => {
+	const sort = document.querySelector("#order") as HTMLFormElement;
 
 	switch (sort.value) {
 		case "name":
@@ -104,10 +103,10 @@ const sortRestaurants = (restaurants) => {
 	return restaurants;
 };
 
-const renderRestaurants = (restaurants) => {
+const renderRestaurants = (restaurants: Object[]) => {
 	//render
-	restaurants.forEach((restaurant) => {
-		const row = restaurantRow(restaurant);
+	restaurants.forEach((restaurant: Restaurant) => {
+		const row = restaurantRow(restaurant) as HTMLTableRowElement;
 		target.append(row);
 
 		row.addEventListener("click", async () => {
@@ -137,7 +136,7 @@ const renderRestaurants = (restaurants) => {
 			restaurantDialog.innerHTML = restaurantModal(restaurant, menu, menuType);
 			restaurantDialog.showModal();
 
-			const closeBtn = document.querySelector("#close-restaurant-btn");
+			const closeBtn = document.querySelector("#close-restaurant-btn") as HTMLButtonElement;
 			closeBtn.addEventListener("click", () => {
 				restaurantDialog.close();
 			});
@@ -145,7 +144,7 @@ const renderRestaurants = (restaurants) => {
 	});
 };
 
-const calcRestaurantDistance = (restaurants) => {
+const calcRestaurantDistance = (restaurants: Object[]) => {
 
 	// calculates distance between user location and restaurant location and saves it for later use
 	// formula is not 100% accurate however
@@ -158,8 +157,8 @@ const calcRestaurantDistance = (restaurants) => {
 	return restaurants;
 }
 
-const mapRestaurants = (restaurants) => {
-	restaurants.forEach((restaurant) => {
+const mapRestaurants = (restaurants: Object[]) => {
+	restaurants.forEach((restaurant: Restaurant) => {
 
 		const resLon = restaurant.location.coordinates[0];
 		const resLat = restaurant.location.coordinates[1];
@@ -176,7 +175,7 @@ const mapRestaurants = (restaurants) => {
 	});
 };
 
-const centerRestaurant = (restaurant) => {
+const centerRestaurant = (restaurant: Restaurant) => {
 	// when a restaurant is selected, map centers to its location
 	map.setView(
 		[
@@ -199,15 +198,15 @@ const centerUser = () => {
 }
 
 //open register dialog
-const registerBtn = document.querySelector("#register-dialog-btn");
+const registerBtn = document.querySelector("#register-dialog-btn") as HTMLButtonElement;
 
 registerBtn.addEventListener("click", async () => {
 
-	const registerDialog = document.querySelector("#register-dialog");
+	const registerDialog = document.querySelector("#register-dialog") as HTMLDialogElement;
 
 	registerDialog.showModal();
 
-	const closeRegisterBtn = document.querySelector("#close-register-btn");
+	const closeRegisterBtn = document.querySelector("#close-register-btn") as HTMLButtonElement;
 	closeRegisterBtn.addEventListener("click", () => {
 		registerDialog.close();
 	});
@@ -215,15 +214,15 @@ registerBtn.addEventListener("click", async () => {
 });
 
 //open login dialog
-const loginBtn = document.querySelector("#login-dialog-btn");
+const loginBtn = document.querySelector("#login-dialog-btn") as HTMLButtonElement;
 
 loginBtn.addEventListener("click", async () => {
 
-	const loginDialog = document.querySelector("#login-dialog");
+	const loginDialog = document.querySelector("#login-dialog") as HTMLDialogElement;
 
 	loginDialog.showModal();
 
-	const closeLoginBtn = document.querySelector("#close-login-btn");
+	const closeLoginBtn = document.querySelector("#close-login-btn") as HTMLButtonElement;
 	closeLoginBtn.addEventListener("click", () => {
 		loginDialog.close();
 	});
@@ -240,7 +239,7 @@ const updateFilters = () => {
 }
 
 // filter button
-const form = document.querySelector("#filter-form");
+const form = document.querySelector("#filter-form") as HTMLFormElement;
 form.addEventListener("submit", async (event) => {
 	event.preventDefault();
 	updateFilters();
@@ -249,12 +248,12 @@ form.addEventListener("submit", async (event) => {
 
 // getting user location
 
-function success(pos){
+function success(pos: GeolocationPosition){
 	userLat = pos.coords.latitude;
 	userLon = pos.coords.longitude;
 	centerUser();
 } 
-function error(err){
+function error(err: GeolocationPositionError){
 	console.warn(`Error ${err.code}: ${err.message}`)
 	alert(`Error ${err.code}: ${err.message} \nThe app will assume you are at Karamalmi Campus.`);
 }

@@ -1,17 +1,21 @@
-const restaurantRow = (restaurant) => {
+import { Restaurant, dailyMenu, weeklyMenu } from "./types.js";
+
+const restaurantRow = (restaurant: Restaurant) => {
 	const { name, address = "Unknown", company } = restaurant;
 	const tr = document.createElement("tr");
 	tr.innerHTML = `<td>${name}</td><td>${address}</td><td>${company}</td>`;
 	return tr;
 };
 
-const restaurantModal = (restaurant, menu, menuType) => {
+const restaurantModal = (restaurant: Restaurant, menu: dailyMenu | weeklyMenu) => {
 	const { name, address, postalCode, city, phone, company } = restaurant;
 	const noDiets = "No special diets listed";
 	let menuHtml ="", courses;
+	const menuType = typeof menu;
+	console.log(menuType);
 
-	// 
-	if (menuType == "daily") {
+	// figuring out
+	if (menuType == "dailyMenu") {
 		courses = menu.courses;
 	} else if (menuType == "weekly") {
 		courses = menu.days;
@@ -49,7 +53,7 @@ const restaurantModal = (restaurant, menu, menuType) => {
 			menuHtml += `<tr>
 			<td>${name}</td> 
 			<td>${price}</td>
-			<td>${diets.map((diet) => {
+			<td>${diets.map((diet: String) => {
 				switch (diet) {
 					//sydänmerkitty
 					case "*":

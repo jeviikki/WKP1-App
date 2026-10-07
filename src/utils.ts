@@ -1,6 +1,6 @@
 "use strict";
 
-const fetchData = async (url) => {
+const fetchData = async (url: String) => {
 	let data;
 	try {
 		const response = await fetch(url);
