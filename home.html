@@ -5,7 +5,6 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Student Restaurants App</title>
 		<link rel="stylesheet" href="css/style.css" />
-		<script type="module" src="build/main.js" defer></script>
 
 		<link
 			rel="stylesheet"
@@ -18,6 +17,7 @@
 			integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
 			crossorigin=""
 		></script>
+		<script type="module" src="build/main.js" defer></script>
 	</head>
 
 	<body>
@@ -46,10 +46,7 @@
 				<p>You can filter restaurants to your liking by using the filtering options.</p>
 
 				<div id="unregistered-section">
-					<p>
-						Sign up to choose a favorite restaurant to make it easier to find as well as customize your
-						profile.
-					</p>
+					<p>Sign up to choose a favorite restaurant to make it easier to find as well as customize your profile.</p>
 					<button id="register-dialog-btn" class="big-btn">Sign up</button>
 					<button id="login-dialog-btn" class="big-btn">I have an account</button>
 				</div>
@@ -87,20 +84,13 @@
 									<label for="company">Show me restaurants for...</label>
 									<div class="checkbox-group">
 										<!-- both checked by default -->
-										<input
-											type="checkbox"
-											id="sodexo"
-											name="company"
-											value="sodexo"
-											checked
-										/><label for="sodexo">Sodexo</label>
-										<input
-											type="checkbox"
-											id="compass-group"
-											name="company"
-											value="compass group"
-											checked
-										/><label for="compass-group">Compass Group</label>
+										<input type="checkbox" id="sodexo" name="company" value="sodexo" checked /><label for="sodexo"
+											>Sodexo</label
+										>
+										<input type="checkbox" id="compass-group" name="company" value="compass group" checked /><label
+											for="compass-group"
+											>Compass Group</label
+										>
 									</div>
 								</div>
 
@@ -152,13 +142,7 @@
 
 					<div class="login-section">
 						<label for="register-email"> Email<span title="Required" class="asterisk">*</span>: </label>
-						<input
-							type="email"
-							id="register-email"
-							name="register-email"
-							pattern=".+@metropolia\.fi$"
-							required
-						/>
+						<input type="email" id="register-email" name="register-email" pattern=".+@metropolia\.fi$" required />
 					</div>
 
 					<div class="login-section">

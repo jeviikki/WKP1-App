@@ -1,4 +1,4 @@
-import { restaurantModal, restaurantRow } from "./components.js";
+import { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow } from "./components.js";
 import { baseUrl, defLat, defLon } from "./variables.js";
 import { fetchData } from "./utils.js";
 ("use strict");
@@ -11,6 +11,7 @@ if (!target || !restaurantDialog) {
     throw new Error("dialog and/or table not found");
 }
 // map stuff
+// figure this out last its kinda held together by duct tape atm
 let userLat = defLat, userLon = defLon;
 const map = L.map("grand-map").setView([userLat, userLon], 11);
 if (!map) {
@@ -38,7 +39,8 @@ const filterRestaurants = (restaurants) => {
     let data;
     let filter1 = "";
     let filter2 = "";
-    const filters = document.querySelectorAll("input[type='checkbox']:checked");
+    // fix with getting formdata instead?
+    const filters = document.querySelectorAll("input[type='checkbox']:checked"); //<- what type are you??
     if (filters.length == 1) {
         filter1 = filters[0].value || "";
     }
@@ -50,6 +52,7 @@ const filterRestaurants = (restaurants) => {
     return data;
 };
 const deleteRows = () => {
+    // empties all restaurants from the table, but keeps the tableheaders.
     const deletion = document.querySelectorAll("tr:not(.tableheader)");
     deletion.forEach((element) => {
         element.remove();
@@ -90,14 +93,14 @@ const renderRestaurants = (restaurants) => {
             row.classList.add("highlight");
             centerRestaurant(restaurant);
             // dialog
-            let menu;
+            const fetchMenuUrl = `${baseUrl}/${menuType}/${restaurant._id}/en`;
+            const menu = await fetchData(fetchMenuUrl);
             if (menuType == "daily") {
-                menu = await fetchData(`${baseUrl}/daily/${restaurant._id}/en`);
+                restaurantDialog.innerHTML = dailyRestaurantModal(restaurant, menu);
             }
             else {
-                menu = await fetchData(`${baseUrl}/weekly/${restaurant._id}/en`);
+                restaurantDialog.innerHTML = weeklyRestaurantModal(restaurant, menu);
             }
-            restaurantDialog.innerHTML = restaurantModal(restaurant, menu, menuType);
             restaurantDialog.showModal();
             const closeBtn = document.querySelector("#close-restaurant-btn");
             closeBtn.addEventListener("click", () => {
@@ -164,10 +167,10 @@ loginBtn.addEventListener("click", async () => {
 const updateFilters = () => {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
-    console.log(data);
+    data.company = formData.getAll("company"); // whatever this does ill figure out
     sortType = data.order;
     menuType = data["menu-type"];
-    console.log(sortType, menuType);
+    console.log(sortType, menuType); // OK
 };
 // filter button
 const form = document.querySelector("#filter-form");

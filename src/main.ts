@@ -1,12 +1,12 @@
-import { restaurantModal, restaurantRow } from "./components.js";
+import { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow } from "./components.js";
 import { baseUrl, defLat, defLon } from "./variables.js";
 import { fetchData } from "./utils.js";
-import { Restaurant } from "./types.js";
+import { Restaurant, Restaurants } from "./types.js";
 
 ("use strict");
 
-let sortType = "name";
-let menuType = "daily";
+let sortType = "name" as FormDataEntryValue;
+let menuType = "daily" as FormDataEntryValue;
 
 // table and dialog
 
@@ -18,6 +18,7 @@ if (!target || !restaurantDialog) {
 }
 
 // map stuff
+// figure this out last its kinda held together by duct tape atm
 
 let userLat = defLat, userLon = defLon;
 
@@ -49,12 +50,13 @@ const getRestaurants = async () => {
 	return sortedRestaurants;
 };
 
-const filterRestaurants = (restaurants: Object[]) => {
+const filterRestaurants = (restaurants: Restaurants) => {
 	let data;
 	let filter1 = "";
 	let filter2 = "";
 
-	const filters = document.querySelectorAll("input[type='checkbox']:checked");
+	// fix with getting formdata instead?
+	const filters = document.querySelectorAll("input[type='checkbox']:checked"); //<- what type are you??
 
 	if (filters.length == 1) {
 		filter1 = filters[0].value || "";
@@ -72,30 +74,31 @@ const filterRestaurants = (restaurants: Object[]) => {
 };
 
 const deleteRows = () => {
+	// empties all restaurants from the table, but keeps the tableheaders.
 	const deletion = document.querySelectorAll("tr:not(.tableheader)");
 	deletion.forEach((element) => {
 		element.remove();
 	});
 };
 
-const sortRestaurants = (restaurants: Object[]) => {
+const sortRestaurants = (restaurants: Restaurants) => {
 	const sort = document.querySelector("#order") as HTMLFormElement;
 
 	switch (sort.value) {
 		case "name":
-			restaurants.sort((a, b) => a.name > b.name);
+			restaurants.sort((a: Restaurant, b: Restaurant) => a.name > b.name);
 			console.log("name sort");
 			break;
 		case "address":
-			restaurants.sort((a, b) => a.address > b.address);
+			restaurants.sort((a: Restaurant, b: Restaurant) => a.address > b.address);
 			console.log("address sort");
 			break;
 		case "location":
-			restaurants.sort((a,b) => a.distance - b.distance);
+			restaurants.sort((a: Restaurant, b: Restaurant) => a.distance - b.distance);
 			console.log("location sort");
 			break;
 		default:
-			restaurants.sort((a, b) => a.name > b.name);
+			restaurants.sort((a: Restaurant, b: Restaurant) => a.name > b.name);
 			console.log("default sort");
 			break;
 	}
@@ -103,7 +106,7 @@ const sortRestaurants = (restaurants: Object[]) => {
 	return restaurants;
 };
 
-const renderRestaurants = (restaurants: Object[]) => {
+const renderRestaurants = (restaurants: Restaurants) => {
 	//render
 	restaurants.forEach((restaurant: Restaurant) => {
 		const row = restaurantRow(restaurant) as HTMLTableRowElement;
@@ -121,19 +124,14 @@ const renderRestaurants = (restaurants: Object[]) => {
 
 			// dialog
 
-			let menu;
+			const fetchMenuUrl = `${baseUrl}/${menuType}/${restaurant._id}/en`;
+			const menu = await fetchData(fetchMenuUrl);
 
 			if (menuType == "daily") {
-				menu = await fetchData(
-					`${baseUrl}/daily/${restaurant._id}/en`,
-				);
+				restaurantDialog.innerHTML = dailyRestaurantModal(restaurant, menu);
 			} else {
-				menu = await fetchData(
-					`${baseUrl}/weekly/${restaurant._id}/en`,
-				);
+				restaurantDialog.innerHTML = weeklyRestaurantModal(restaurant, menu);
 			}
-
-			restaurantDialog.innerHTML = restaurantModal(restaurant, menu, menuType);
 			restaurantDialog.showModal();
 
 			const closeBtn = document.querySelector("#close-restaurant-btn") as HTMLButtonElement;
@@ -144,7 +142,7 @@ const renderRestaurants = (restaurants: Object[]) => {
 	});
 };
 
-const calcRestaurantDistance = (restaurants: Object[]) => {
+const calcRestaurantDistance = (restaurants: Restaurants) => {
 
 	// calculates distance between user location and restaurant location and saves it for later use
 	// formula is not 100% accurate however
@@ -157,7 +155,7 @@ const calcRestaurantDistance = (restaurants: Object[]) => {
 	return restaurants;
 }
 
-const mapRestaurants = (restaurants: Object[]) => {
+const mapRestaurants = (restaurants: Restaurants) => {
 	restaurants.forEach((restaurant: Restaurant) => {
 
 		const resLon = restaurant.location.coordinates[0];
@@ -232,10 +230,10 @@ loginBtn.addEventListener("click", async () => {
 const updateFilters = () => {
 	const formData = new FormData(form);
 	const data = Object.fromEntries(formData);
-	console.log(data);
+	data.company = formData.getAll("company"); // whatever this does ill figure out
 	sortType = data.order;
 	menuType = data["menu-type"];
-	console.log(sortType, menuType);
+	console.log(sortType, menuType); // OK
 }
 
 // filter button
