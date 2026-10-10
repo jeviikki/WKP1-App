@@ -8,7 +8,7 @@ type Restaurant = {
 	phone: String;
 	location: {
 		type: String;
-		coordinates: Number[];
+		coordinates: number[];
 	};
 	company: String;
 	distance?: number; //for distance calc
@@ -17,7 +17,7 @@ type Restaurant = {
 type course = {
 	name: String;
 	price: String;
-	diets: String | String[];
+	diets: String | String[]; // sodexo and compass group list them differently
 }
 
 type day = {
@@ -26,7 +26,10 @@ type day = {
 }
 
 type Restaurants = {
-	restaurants: Restaurant[]
+	filter(arg0: (restaurant: Restaurant) => any): Restaurants;
+	sort(arg0: (a: Restaurant, b: Restaurant) => boolean): Restaurants;
+	forEach(arg0: (restaurant: Restaurant) => void): Restaurants;
+	restaurants: Restaurant[];
 }
 
 type dailyMenu = {

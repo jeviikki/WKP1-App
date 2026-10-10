@@ -1,12 +1,13 @@
 import { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow } from "./components.js";
-import { baseUrl, defLat, defLon } from "./variables.js";
+import { baseUrl, defLat, defLon, target, restaurantDialog } from "./variables.js";
 import { fetchData } from "./utils.js";
+//import * as L from "leaflet";
+//^ doesnt work yet when imported to js but works on ts
 ("use strict");
-let sortType = "name";
-let menuType = "daily";
+// default filters
+let filterSort = "name";
+let filterMenuType = "daily";
 // table and dialog
-const target = document.querySelector("table");
-const restaurantDialog = document.querySelector("#restaurant-dialog");
 if (!target || !restaurantDialog) {
     throw new Error("dialog and/or table not found");
 }
@@ -27,6 +28,7 @@ const you = L.circle([userLat, userLon], {
     fillOpacity: 0.5,
     radius: 500,
 }).addTo(map);
+// restaurant stuff
 const getRestaurants = async () => {
     const restaurants = await fetchData(baseUrl);
     const calculatedRestaurants = calcRestaurantDistance(restaurants);
@@ -36,18 +38,11 @@ const getRestaurants = async () => {
     return sortedRestaurants;
 };
 const filterRestaurants = (restaurants) => {
-    let data;
-    let filter1 = "";
-    let filter2 = "";
-    // fix with getting formdata instead?
-    const filters = document.querySelectorAll("input[type='checkbox']:checked"); //<- what type are you??
-    if (filters.length == 1) {
-        filter1 = filters[0].value || "";
-    }
-    if (filters.length == 2) {
-        filter2 = filters[1].value || "";
-    }
-    data = restaurants.filter((restaurant) => restaurant.company.toLowerCase() == filter1 || filter2);
+    const filtersData = updateFilters();
+    let filter1 = filtersData.company[0] || "";
+    let filter2 = filtersData.company[1] || "";
+    console.log(filter1, filter2);
+    const data = restaurants.filter((restaurant) => restaurant.company.toLowerCase() == filter1 || filter2);
     deleteRows();
     return data;
 };
@@ -59,8 +54,7 @@ const deleteRows = () => {
     });
 };
 const sortRestaurants = (restaurants) => {
-    const sort = document.querySelector("#order");
-    switch (sort.value) {
+    switch (filterSort) {
         case "name":
             restaurants.sort((a, b) => a.name > b.name);
             console.log("name sort");
@@ -70,7 +64,7 @@ const sortRestaurants = (restaurants) => {
             console.log("address sort");
             break;
         case "location":
-            restaurants.sort((a, b) => a.distance - b.distance);
+            restaurants.sort((a, b) => a.distance > b.distance);
             console.log("location sort");
             break;
         default:
@@ -93,9 +87,10 @@ const renderRestaurants = (restaurants) => {
             row.classList.add("highlight");
             centerRestaurant(restaurant);
             // dialog
-            const fetchMenuUrl = `${baseUrl}/${menuType}/${restaurant._id}/en`;
+            const fetchMenuUrl = `${baseUrl}/${filterMenuType}/${restaurant._id}/en`;
             const menu = await fetchData(fetchMenuUrl);
-            if (menuType == "daily") {
+            // which type of menu to render
+            if (filterMenuType == "daily") {
                 restaurantDialog.innerHTML = dailyRestaurantModal(restaurant, menu);
             }
             else {
@@ -112,11 +107,11 @@ const renderRestaurants = (restaurants) => {
 const calcRestaurantDistance = (restaurants) => {
     // calculates distance between user location and restaurant location and saves it for later use
     // formula is not 100% accurate however
-    for (const restaurant of restaurants) {
+    restaurants.forEach((restaurant) => {
         const resLon = restaurant.location.coordinates[0];
         const resLat = restaurant.location.coordinates[1];
         restaurant.distance = Math.sqrt((userLat - resLat) ** 2 + (userLon - resLon) ** 2);
-    }
+    });
     return restaurants;
 };
 const mapRestaurants = (restaurants) => {
@@ -166,11 +161,11 @@ loginBtn.addEventListener("click", async () => {
 });
 const updateFilters = () => {
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData);
-    data.company = formData.getAll("company"); // whatever this does ill figure out
-    sortType = data.order;
-    menuType = data["menu-type"];
-    console.log(sortType, menuType); // OK
+    let data = Object.fromEntries(formData);
+    data.company = formData.getAll("company");
+    filterSort = data.order;
+    filterMenuType = data["menu-type"];
+    return data;
 };
 // filter button
 const form = document.querySelector("#filter-form");
