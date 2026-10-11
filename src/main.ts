@@ -2,14 +2,15 @@ import { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow } from "./co
 import { baseUrl, defLat, defLon, target, restaurantDialog } from "./variables.js";
 import { fetchData } from "./utils.js";
 import { Restaurant, Restaurants } from "./types.js";
-//import * as L from "leaflet";
-//^ doesnt work yet when imported to js but works on ts
+import {Map, TileLayer, Marker, Circle} from "leaflet";
 
 ("use strict");
 
 // default filters
-let filterSort = "name" as FormDataEntryValue;
-let filterMenuType = "daily" as FormDataEntryValue;
+
+let filterSort: FormDataEntryValue;
+let filterMenuType: FormDataEntryValue;
+let filterCompany: FormDataEntryValue[];
 
 // table and dialog
 
@@ -18,23 +19,22 @@ if (!target || !restaurantDialog) {
 }
 
 // map stuff
-// figure this out last its kinda held together by duct tape atm
 
 let userLat = defLat, userLon = defLon;
 
-const map = L.map("grand-map").setView([userLat, userLon], 11);
+const map = new Map("grand-map").setView([userLat, userLon], 11);
 
 if (!map) {
 	throw new Error("map is missing");
 }
 
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+new TileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 	maxZoom: 19,
 	attribution:
 		'&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
 
-const you = L.circle([userLat, userLon], {
+const you = new Circle([userLat, userLon], {
 	color: 'red',
 	fillColor: '#f03',
 	fillOpacity: 0.5,
@@ -44,20 +44,23 @@ const you = L.circle([userLat, userLon], {
 // restaurant stuff
 
 const getRestaurants = async () => {
+	// fetch restaurants from api
 	const restaurants = await fetchData(baseUrl);
+	// distance
 	const calculatedRestaurants = calcRestaurantDistance(restaurants);
+	// filtering related
+	updateFilters();
 	const filteredRestaurants = filterRestaurants(calculatedRestaurants);
 	const sortedRestaurants = sortRestaurants(filteredRestaurants);
+	// render them on the page
 	renderRestaurants(sortedRestaurants);
 	return sortedRestaurants;
 };
 
 const filterRestaurants = (restaurants: Restaurants) => {
-	const filtersData = updateFilters();
-	let filter1 = filtersData.company[0] || "";
-	let filter2 = filtersData.company[1] || "";
-
-	console.log(filter1, filter2)
+	// which restaurants it will show
+	let filter1 = filterCompany[0] || "";
+	let filter2 = filterCompany[1] || "";
 
 	const data = restaurants.filter(
 		(restaurant: Restaurant) => restaurant.company.toLowerCase() == filter1 || filter2,
@@ -80,20 +83,16 @@ const sortRestaurants = (restaurants: Restaurants) => {
 	switch (filterSort) {
 		case "name":
 			restaurants.sort((a: Restaurant, b: Restaurant) => a.name > b.name);
-			console.log("name sort");
 			break;
 		case "address":
 			restaurants.sort((a: Restaurant, b: Restaurant) => a.address > b.address);
-			console.log("address sort");
 			break;
 		case "location":
 			// locations get calculated before this is executed
 			restaurants.sort((a: Restaurant, b: Restaurant) => a.distance! > b.distance!);
-			console.log("location sort");
 			break;
 		default:
 			restaurants.sort((a: Restaurant, b: Restaurant) => a.name > b.name);
-			console.log("default sort");
 			break;
 	}
 
@@ -158,7 +157,7 @@ const mapRestaurants = (restaurants: Restaurants) => {
 
 		// marker & popup
 
-		const marker = L.marker([resLat, resLon]).addTo(map);
+		const marker = new Marker([resLat, resLon]).addTo(map);
 		marker.bindPopup(
 			`
 				<h3>${restaurant.name}</h3>
@@ -225,10 +224,9 @@ loginBtn.addEventListener("click", async () => {
 const updateFilters = () => {
 	const formData = new FormData(form);
 	let data = Object.fromEntries(formData);
-	data.company = formData.getAll("company");
+	filterCompany = formData.getAll("company");
 	filterSort = data.order;
 	filterMenuType = data["menu-type"];
-	return data
 }
 
 // filter button

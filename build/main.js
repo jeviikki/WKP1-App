@@ -1,28 +1,27 @@
 import { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow } from "./components.js";
 import { baseUrl, defLat, defLon, target, restaurantDialog } from "./variables.js";
 import { fetchData } from "./utils.js";
-//import * as L from "leaflet";
-//^ doesnt work yet when imported to js but works on ts
+import { Map, TileLayer, Marker, Circle } from "leaflet";
 ("use strict");
 // default filters
-let filterSort = "name";
-let filterMenuType = "daily";
+let filterSort;
+let filterMenuType;
+let filterCompany;
 // table and dialog
 if (!target || !restaurantDialog) {
     throw new Error("dialog and/or table not found");
 }
 // map stuff
-// figure this out last its kinda held together by duct tape atm
 let userLat = defLat, userLon = defLon;
-const map = L.map("grand-map").setView([userLat, userLon], 11);
+const map = new Map("grand-map").setView([userLat, userLon], 11);
 if (!map) {
     throw new Error("map is missing");
 }
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+new TileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 }).addTo(map);
-const you = L.circle([userLat, userLon], {
+const you = new Circle([userLat, userLon], {
     color: 'red',
     fillColor: '#f03',
     fillOpacity: 0.5,
@@ -30,18 +29,22 @@ const you = L.circle([userLat, userLon], {
 }).addTo(map);
 // restaurant stuff
 const getRestaurants = async () => {
+    // fetch restaurants from api
     const restaurants = await fetchData(baseUrl);
+    // distance
     const calculatedRestaurants = calcRestaurantDistance(restaurants);
+    // filtering related
+    updateFilters();
     const filteredRestaurants = filterRestaurants(calculatedRestaurants);
     const sortedRestaurants = sortRestaurants(filteredRestaurants);
+    // render them on the page
     renderRestaurants(sortedRestaurants);
     return sortedRestaurants;
 };
 const filterRestaurants = (restaurants) => {
-    const filtersData = updateFilters();
-    let filter1 = filtersData.company[0] || "";
-    let filter2 = filtersData.company[1] || "";
-    console.log(filter1, filter2);
+    // which restaurants it will show
+    let filter1 = filterCompany[0] || "";
+    let filter2 = filterCompany[1] || "";
     const data = restaurants.filter((restaurant) => restaurant.company.toLowerCase() == filter1 || filter2);
     deleteRows();
     return data;
@@ -57,19 +60,16 @@ const sortRestaurants = (restaurants) => {
     switch (filterSort) {
         case "name":
             restaurants.sort((a, b) => a.name > b.name);
-            console.log("name sort");
             break;
         case "address":
             restaurants.sort((a, b) => a.address > b.address);
-            console.log("address sort");
             break;
         case "location":
+            // locations get calculated before this is executed
             restaurants.sort((a, b) => a.distance > b.distance);
-            console.log("location sort");
             break;
         default:
             restaurants.sort((a, b) => a.name > b.name);
-            console.log("default sort");
             break;
     }
     return restaurants;
@@ -119,7 +119,7 @@ const mapRestaurants = (restaurants) => {
         const resLon = restaurant.location.coordinates[0];
         const resLat = restaurant.location.coordinates[1];
         // marker & popup
-        const marker = L.marker([resLat, resLon]).addTo(map);
+        const marker = new Marker([resLat, resLon]).addTo(map);
         marker.bindPopup(`
 				<h3>${restaurant.name}</h3>
 				<p>${restaurant.address}</p>
@@ -162,10 +162,9 @@ loginBtn.addEventListener("click", async () => {
 const updateFilters = () => {
     const formData = new FormData(form);
     let data = Object.fromEntries(formData);
-    data.company = formData.getAll("company");
+    filterCompany = formData.getAll("company");
     filterSort = data.order;
     filterMenuType = data["menu-type"];
-    return data;
 };
 // filter button
 const form = document.querySelector("#filter-form");

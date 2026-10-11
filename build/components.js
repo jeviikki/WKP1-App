@@ -42,22 +42,35 @@ const dailyRestaurantModal = (restaurant, menu) => {
 const weeklyRestaurantModal = (restaurant, menu) => {
     const { name, address, postalCode, city, phone, company } = restaurant;
     const week = menu.days;
+    console.log(week);
     let menuHtml = "";
-    for (const day of week) {
-        const date = day.date || "Unknown";
-        const weeklyMenu = day.courses || "Empty.";
-        // table header
-        menuHtml += `<h3>${date}</h3>
-		<table>
-			<tr>
-				<th>Course</th>
-				<th>Price</th>
-				<th>Diets</th>
-			</tr>`;
-        for (const course of weeklyMenu) {
-            menuHtml += addCourse(course); //returns the course html and adds it to the menu html
+    if (week.length < 1) {
+        // in case of no weekly menu
+        menuHtml = "Empty.";
+    }
+    else {
+        for (const day of week) {
+            const date = day.date || "Unknown";
+            const weeklyMenu = day.courses;
+            if (weeklyMenu.length < 1) {
+                // in case of empty day
+                menuHtml = `Empty.`;
+            }
+            else {
+                // table header
+                menuHtml += `<h3>${date}</h3>
+				<table>
+					<tr>
+						<th>Course</th>
+						<th>Price</th>
+						<th>Diets</th>
+					</tr>`;
+                for (const course of weeklyMenu) {
+                    menuHtml += addCourse(course); //returns the course html and adds it to the menu html
+                }
+                menuHtml += "</table>";
+            }
         }
-        menuHtml += "</table>";
     }
     const dialogHtml = `
 		<div class="dialog-top">

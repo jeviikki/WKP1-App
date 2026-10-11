@@ -6,8 +6,11 @@
 		"module":"ESNext",
 		"noImplicitAny":true,
 		"strict":true,
-		"allowUmdGlobalAccess": true
+    "paths": {
+      "https://cdn.jsdelivr.net/npm/leaflet@2.0.0-alpha.1/dist/leaflet.js": [
+        "./node_modules/@types/leaflet/index" // Re-map to the type
+      ]
+    }
 	},
-	"include":["./src/"],
-	"exclude":["./node_modules/"]
+	"include":["./src/"]
 }
