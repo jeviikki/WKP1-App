@@ -59,7 +59,8 @@ const weeklyRestaurantModal = (restaurant: Restaurant, menu: weeklyMenu) => {
 			
 			if (weeklyMenu.length < 1) {
 				// in case of empty day
-				menuHtml = `Empty.`;
+				menuHtml += `<h3>${date}</h3>
+				Empty.`;
 			} else {
 				// table header
 				menuHtml += `<h3>${date}</h3>

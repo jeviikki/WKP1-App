@@ -171,6 +171,7 @@ const form = document.querySelector("#filter-form");
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
     updateFilters();
+    window.location.replace("#restaurants");
     await getRestaurants();
 });
 // getting user location

@@ -6,7 +6,7 @@
 	--fancy-blue: #157a6e;
 	--fancy-green: #499f68;
 	--fancy-white: #f0f0f0;
-	--content-width: 1200px;
+	--content-width: 80%;
 	--default-radius: 10px;
 }
 
@@ -34,6 +34,17 @@ h1,
 h2,
 h3 {
 	font-family: Cursive-regular;
+}
+
+/* mobile responsive */
+
+@media screen and (max-width: 1300px) {
+	#split {
+		flex-direction: column-reverse;
+	}
+	#split-group {
+		position: static !important;
+	}
 }
 
 /* logged in user card */
@@ -157,14 +168,16 @@ td {
 	width: 100%;
 }
 
-#split table {
-	min-width: 600px;
+#split h1,
+#split h2,
+#split h3 {
+	color: var(--fancy-white);
 }
 
 #split-group {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 0px;
 	flex-grow: 1;
 	height: 100%;
 	position: sticky;

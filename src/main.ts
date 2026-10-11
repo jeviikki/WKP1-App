@@ -234,6 +234,7 @@ const form = document.querySelector("#filter-form") as HTMLFormElement;
 form.addEventListener("submit", async (event) => {
 	event.preventDefault();
 	updateFilters();
+	window.location.replace("#restaurants");
 	await getRestaurants();
 });
 
