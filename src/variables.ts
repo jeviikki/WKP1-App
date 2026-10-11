@@ -4,5 +4,6 @@ const defLat = 60.223184;
 const defLon = 24.7586024;
 const target = document.querySelector("table") as HTMLTableElement;
 const restaurantDialog = document.querySelector("#restaurant-dialog") as HTMLDialogElement;
+const restaurantError = document.querySelector("#restaurant-error") as HTMLElement;
 
-export { baseUrl, defLat, defLon, target, restaurantDialog};
+export { baseUrl, defLat, defLon, target, restaurantDialog, restaurantError};

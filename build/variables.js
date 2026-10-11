@@ -3,4 +3,5 @@ const defLat = 60.223184;
 const defLon = 24.7586024;
 const target = document.querySelector("table");
 const restaurantDialog = document.querySelector("#restaurant-dialog");
-export { baseUrl, defLat, defLon, target, restaurantDialog };
+const restaurantError = document.querySelector("#restaurant-error");
+export { baseUrl, defLat, defLon, target, restaurantDialog, restaurantError };

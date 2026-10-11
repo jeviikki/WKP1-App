@@ -160,6 +160,14 @@ td {
 	background-color: lightgray !important;
 }
 
+#restaurant-error {
+	display: none;
+}
+
+.display-error {
+	display: block !important;
+}
+
 /* split view */
 
 #split {

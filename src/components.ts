@@ -46,11 +46,11 @@ const dailyRestaurantModal = (restaurant: Restaurant, menu: dailyMenu) => {
 
 const weeklyRestaurantModal = (restaurant: Restaurant, menu: weeklyMenu) => {
 	const { name, address, postalCode, city, phone, company } = restaurant;
-	const week = menu.days;
+	const week = menu.days || "";
 	console.log(week);
 	let menuHtml = "";
 	if (week.length < 1) {
-		// in case of no weekly menu
+		// in case of no weekly menu (e.g. Stadin AO as of oct 11th)
 		menuHtml = "Empty.";
 	} else {
 		for (const day of week) {

@@ -1,5 +1,5 @@
 import { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow } from "./components.js";
-import { baseUrl, defLat, defLon, target, restaurantDialog } from "./variables.js";
+import { baseUrl, defLat, defLon, target, restaurantDialog, restaurantError } from "./variables.js";
 import { fetchData } from "./utils.js";
 import { Restaurant, Restaurants } from "./types.js";
 import {Map, TileLayer, Marker, Circle} from "leaflet";
@@ -46,6 +46,10 @@ const you = new Circle([userLat, userLon], {
 const getRestaurants = async () => {
 	// fetch restaurants from api
 	const restaurants = await fetchData(baseUrl);
+	// in case it fails
+	if (typeof(restaurants) == "string"){
+		restaurantError.classList.add("display-error");
+	}
 	// distance
 	const calculatedRestaurants = calcRestaurantDistance(restaurants);
 	// filtering related
@@ -247,7 +251,7 @@ function success(pos: GeolocationPosition){
 } 
 function error(err: GeolocationPositionError){
 	console.warn(`Error ${err.code}: ${err.message}`)
-	alert(`Error ${err.code}: ${err.message} \nThe app will assume you are at Karamalmi Campus.`);
+	alert(`Error ${err.code}: ${err.message} \nThe app will place you at Karamalmi Campus.`);
 }
 navigator.geolocation.getCurrentPosition(
 	success,
