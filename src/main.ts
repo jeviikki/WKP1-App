@@ -1,7 +1,9 @@
 import { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow } from "./components.js";
-import { baseUrl, defLat, defLon, target, restaurantDialog, restaurantError } from "./variables.js";
-import { fetchData } from "./utils.js";
-import { Restaurant, Restaurants } from "./types.js";
+import { baseUrl, userUrl, uploadUrl, defLat, defLon } from "./variables.js";
+import {target, restaurantDialog, restaurantError, unregisteredSection, registerBtn, loginBtn, loginDialog, userCard, avatarTarget, faveTarget, nameTarget} from "./elements.js";
+import { fetchData, fetchUserData } from "./utils.js";
+import { Restaurant, Restaurants } from "./types/restaurant.js";
+import { User, LoginUser, UpdateUser } from "./types/user.js";
 import {Map, TileLayer, Marker, Circle} from "leaflet";
 
 ("use strict");
@@ -17,6 +19,9 @@ let filterCompany: FormDataEntryValue[];
 if (!target || !restaurantDialog) {
 	throw new Error("dialog and/or table not found");
 }
+
+// user login forms
+const loginForm = document.querySelector("#login-form") as HTMLFormElement;
 
 // map stuff
 
@@ -194,7 +199,6 @@ const centerUser = () => {
 }
 
 //open register dialog
-const registerBtn = document.querySelector("#register-dialog-btn") as HTMLButtonElement;
 
 registerBtn.addEventListener("click", async () => {
 
@@ -210,11 +214,8 @@ registerBtn.addEventListener("click", async () => {
 });
 
 //open login dialog
-const loginBtn = document.querySelector("#login-dialog-btn") as HTMLButtonElement;
 
 loginBtn.addEventListener("click", async () => {
-
-	const loginDialog = document.querySelector("#login-dialog") as HTMLDialogElement;
 
 	loginDialog.showModal();
 
@@ -261,6 +262,51 @@ navigator.geolocation.getCurrentPosition(
 		timeout: 5000,
 	},
 );
+
+// logging in
+
+const loginUser = document.querySelector("#login-username") as HTMLFormElement;
+const loginPass = document.querySelector("#login-password") as HTMLFormElement;
+
+const login = async (): Promise<LoginUser> => {
+  const credentials = {
+    username: loginUser?.value,
+    password: loginPass?.value,
+  };
+
+  const options: RequestInit = {
+    method: "POST",
+    headers: {
+      "Content-Type" : "application/json"
+    },
+    body: JSON.stringify(credentials),
+  };
+  return await fetchUserData(userUrl + "auth/login", options);
+};
+
+loginForm.addEventListener("submit", async (evt) => {
+  evt.preventDefault();
+  const user = await login();
+  localStorage.setItem("token", user.token);
+	loginDialog.close();
+  displayUserData(user.data);
+});
+
+const displayUserData = (data: User) => {
+	const userName = data.username || "This user";
+	const userFave = data.favouriteRestaurant || "0";
+	const userAvatar = data.avatar || null;
+
+	userCard.classList.add("visible-card");
+	unregisteredSection.classList.add("logged-in");
+	
+	nameTarget.innerText = userName;
+	if (userAvatar == null) {
+		avatarTarget.src = "../images/user-svgrepo-com.svg";
+	} else{
+		avatarTarget.src = uploadUrl + userAvatar;
+	}
+}
 
 centerUser();
 

@@ -1,0 +1,12 @@
+const target = document.querySelector("table");
+const restaurantDialog = document.querySelector("#restaurant-dialog");
+const restaurantError = document.querySelector("#restaurant-error");
+const unregisteredSection = document.querySelector("#unregistered-section");
+const registerBtn = document.querySelector("#register-dialog-btn");
+const loginBtn = document.querySelector("#login-dialog-btn");
+const loginDialog = document.querySelector("#login-dialog");
+const userCard = document.querySelector("#user-card");
+const nameTarget = document.querySelector("#user-name");
+const faveTarget = document.querySelector("#user-fave");
+const avatarTarget = document.querySelector("#user-avatar");
+export { target, restaurantDialog, restaurantError, unregisteredSection, registerBtn, loginBtn, loginDialog, userCard, nameTarget, faveTarget, avatarTarget };

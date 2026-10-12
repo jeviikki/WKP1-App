@@ -1,5 +1,7 @@
 "use strict";
 
+// for restaurants and menus
+
 const fetchData = async (url: string) => {
 	let data;
 	try {
@@ -14,4 +16,20 @@ const fetchData = async (url: string) => {
 	}
 };
 
-export { fetchData };
+// for users
+
+const fetchUserData = async <T>(
+  url: string,
+  options: RequestInit = {}
+): Promise<T> => {
+  const response = await fetch(url, options);
+  if (!response.ok) {
+		console.log(response);
+    throw new Error(`Error ${response.status} occured`);
+  }
+  const json = response.json();
+  return json;
+};
+
+
+export { fetchData, fetchUserData };

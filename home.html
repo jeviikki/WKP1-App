@@ -41,7 +41,7 @@
 						<blockquote>
 							<p>
 								<span id="user-name">This user</span>'s favorite restaurant is
-								<span id="user-fav" class="nofave">none of them</span>.
+								<span id="user-fave" class="nofave">none of them</span>.
 							</p>
 						</blockquote>
 					</div>
@@ -49,7 +49,7 @@
 
 				<p>Browse student restaurants provided by Sodexo and Compass Group all across Finland.</p>
 
-				<p>You can filter restaurants to your liking by using the filtering options.</p>
+				<p>You can filter the restaurants to your liking by using the provided filtering options.</p>
 
 				<div id="unregistered-section">
 					<p>Sign up to choose a favorite restaurant to make it easier to find as well as customize your profile.</p>
@@ -140,7 +140,7 @@
 
 			<div class="dialog-body">
 				<p>Make an account to use Student Restaurant App at its full potential.</p>
-				<form class="login-form">
+				<form class="login-form" id="register-form">
 					<div class="login-section">
 						<label for="register-username">
 							Username<span title="Required; Minimum 3 characters" class="asterisk">*</span>:
@@ -193,7 +193,7 @@
 			<div class="dialog-body">
 				<p>Log in with an existing account.</p>
 
-				<form class="login-form">
+				<form class="login-form" id="login-form">
 					<div class="login-section">
 						<label for="login-username"> Username:</label>
 						<input type="text" id="login-username" name="login-username" required />
@@ -204,13 +204,7 @@
 						<input type="password" id="login-password" name="login-password" required />
 					</div>
 
-					<!-- does nothing at the moment 
-						<input
-							type="submit"
-							class="big-btn"
-							value="Log in"
-							id="login-btn"
-						/>-->
+					<input type="submit" class="big-btn" value="Log in" id="login-btn" />
 				</form>
 			</div>
 		</dialog>

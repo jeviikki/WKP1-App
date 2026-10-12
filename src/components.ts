@@ -1,4 +1,4 @@
-import { Restaurant, course, dailyMenu, weeklyMenu } from "./types.js";
+import { Restaurant, course, dailyMenu, weeklyMenu } from "./types/restaurant.js";
 
 const restaurantRow = (restaurant: Restaurant) => {
 	const { name, address = "Unknown", company } = restaurant;
