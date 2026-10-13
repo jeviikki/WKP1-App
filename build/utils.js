@@ -25,4 +25,13 @@ const fetchUserData = async (url, options = {}) => {
     const json = response.json();
     return json;
 };
-export { fetchData, fetchUserData };
+// for username availability
+const fetchAvailability = async (url) => {
+    const response = await fetch(url);
+    if (!response.ok) {
+        throw new Error(`Error ${response.status} occured`);
+    }
+    const json = response.json();
+    return json;
+};
+export { fetchData, fetchUserData, fetchAvailability };

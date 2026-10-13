@@ -1,7 +1,7 @@
 import { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow } from "./components.js";
 import { baseUrl, userUrl, uploadUrl, defLat, defLon } from "./variables.js";
-import {target, restaurantDialog, restaurantError, unregisteredSection, registerBtn, loginBtn, loginDialog, userCard, avatarTarget, faveTarget, nameTarget} from "./elements.js";
-import { fetchData, fetchUserData } from "./utils.js";
+import * as e from "./elements.js";
+import { fetchData, fetchUserData, fetchAvailability } from "./utils.js";
 import { Restaurant, Restaurants } from "./types/restaurant.js";
 import { User, LoginUser, UpdateUser } from "./types/user.js";
 import {Map, TileLayer, Marker, Circle} from "leaflet";
@@ -16,12 +16,13 @@ let filterCompany: FormDataEntryValue[];
 
 // table and dialog
 
-if (!target || !restaurantDialog) {
+if (!e.target || !e.restaurantDialog) {
 	throw new Error("dialog and/or table not found");
 }
 
 // user login forms
 const loginForm = document.querySelector("#login-form") as HTMLFormElement;
+const registerForm = document.querySelector("#register-form") as HTMLFormElement;
 
 // map stuff
 
@@ -53,7 +54,7 @@ const getRestaurants = async () => {
 	const restaurants = await fetchData(baseUrl);
 	// in case it fails
 	if (typeof(restaurants) == "string"){
-		restaurantError.classList.add("display-error");
+		e.restaurantError.classList.add("display-error");
 	}
 	// distance
 	const calculatedRestaurants = calcRestaurantDistance(restaurants);
@@ -112,7 +113,7 @@ const renderRestaurants = (restaurants: Restaurants) => {
 	//render
 	restaurants.forEach((restaurant: Restaurant) => {
 		const row = restaurantRow(restaurant) as HTMLTableRowElement;
-		target.append(row);
+		e.target.append(row);
 
 		row.addEventListener("click", async () => {
 			// highlight
@@ -131,15 +132,15 @@ const renderRestaurants = (restaurants: Restaurants) => {
 			// which type of menu to render
 
 			if (filterMenuType == "daily") {
-				restaurantDialog.innerHTML = dailyRestaurantModal(restaurant, menu);
+				e.restaurantDialog.innerHTML = dailyRestaurantModal(restaurant, menu);
 			} else {
-				restaurantDialog.innerHTML = weeklyRestaurantModal(restaurant, menu);
+				e.restaurantDialog.innerHTML = weeklyRestaurantModal(restaurant, menu);
 			}
-			restaurantDialog.showModal();
+			e.restaurantDialog.showModal();
 
 			const closeBtn = document.querySelector("#close-restaurant-btn") as HTMLButtonElement;
 			closeBtn.addEventListener("click", () => {
-				restaurantDialog.close();
+				e.restaurantDialog.close();
 			});
 		});
 	});
@@ -200,7 +201,7 @@ const centerUser = () => {
 
 //open register dialog
 
-registerBtn.addEventListener("click", async () => {
+e.registerBtn.addEventListener("click", async () => {
 
 	const registerDialog = document.querySelector("#register-dialog") as HTMLDialogElement;
 
@@ -215,13 +216,13 @@ registerBtn.addEventListener("click", async () => {
 
 //open login dialog
 
-loginBtn.addEventListener("click", async () => {
+e.loginBtn.addEventListener("click", async () => {
 
-	loginDialog.showModal();
+	e.loginDialog.showModal();
 
 	const closeLoginBtn = document.querySelector("#close-login-btn") as HTMLButtonElement;
 	closeLoginBtn.addEventListener("click", () => {
-		loginDialog.close();
+		e.loginDialog.close();
 	});
 
 });
@@ -263,6 +264,51 @@ navigator.geolocation.getCurrentPosition(
 	},
 );
 
+// register account
+
+const regUser = document.querySelector("#register-username") as HTMLFormElement;
+const regEmail = document.querySelector("#register-email") as HTMLFormElement;
+const regPass = document.querySelector("#register-password") as HTMLFormElement;
+
+const registerUser = async (): Promise<LoginUser> => {
+  const credentials = {
+    username: regUser.value,
+    password: regPass.value,
+		email: regEmail.value,
+  };
+
+  const options: RequestInit = {
+    method: "POST",
+    headers: {
+      "Content-Type" : "application/json"
+    },
+    body: JSON.stringify(credentials),
+  };
+  return await fetchUserData(userUrl + "users", options);
+};
+
+const checkAvailability = async(username: String): Promise<any> => {
+  return await fetchAvailability(userUrl + `users/available/${username}`);
+}
+
+registerForm.addEventListener("submit", async (evt) => {
+  evt.preventDefault();
+	// check usename availability
+	const availability = await checkAvailability(regUser.value);
+	console.log(availability.available)
+	if (availability.available == false) {
+		alert("Username is already taken!");
+		return
+	}
+	// if username is available:
+  const user = await registerUser();
+	console.log(user);
+	if (user.message = "ok") {
+		alert("User account created successfully! You can now log in.")
+		e.registerDialog.close();
+	}
+});
+
 // logging in
 
 const loginUser = document.querySelector("#login-username") as HTMLFormElement;
@@ -287,27 +333,61 @@ const login = async (): Promise<LoginUser> => {
 loginForm.addEventListener("submit", async (evt) => {
   evt.preventDefault();
   const user = await login();
+	// todo: a "wrong username/password" alert
   localStorage.setItem("token", user.token);
-	loginDialog.close();
+	e.loginDialog.close();
   displayUserData(user.data);
 });
+
+const getUserData = async (token: string): Promise<User> => {
+
+  const options: RequestInit = {
+    method: "GET",
+    headers: {
+      Authorization : "Bearer " + token,
+    }
+  };
+
+  return await fetchUserData(userUrl + "users/token", options)
+};
 
 const displayUserData = (data: User) => {
 	const userName = data.username || "This user";
 	const userFave = data.favouriteRestaurant || "0";
 	const userAvatar = data.avatar || null;
 
-	userCard.classList.add("visible-card");
-	unregisteredSection.classList.add("logged-in");
+	e.userCard.classList.add("visible-card");
+	e.unregisteredSection.classList.add("logged-in");
 	
-	nameTarget.innerText = userName;
+	e.nameTarget.innerText = userName;
 	if (userAvatar == null) {
-		avatarTarget.src = "../images/user-svgrepo-com.svg";
+		e.avatarTarget.src = "../images/user-svgrepo-com.svg";
 	} else{
-		avatarTarget.src = uploadUrl + userAvatar;
+		e.avatarTarget.src = uploadUrl + userAvatar;
 	}
-}
+};
+
+const checkToken = async (): Promise<void> => {
+
+  const token = window.localStorage.getItem("token");
+
+  if (!token) {
+    console.log("Not logged in");
+    return;
+  }
+
+  try {
+    const userData = await getUserData(token);
+    displayUserData(userData);
+  } catch (error) {
+    console.log((error as Error).message);
+  }
+
+};
 
 centerUser();
 
 mapRestaurants(await getRestaurants());
+
+// check if token exists to keep user logged in 
+checkToken();

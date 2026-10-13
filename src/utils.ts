@@ -31,5 +31,17 @@ const fetchUserData = async <T>(
   return json;
 };
 
+// for username availability
 
-export { fetchData, fetchUserData };
+const fetchAvailability = async <T>(
+  url: string
+): Promise<T> => {
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Error ${response.status} occured`);
+  }
+  const json = response.json();
+  return json;
+};
+
+export { fetchData, fetchUserData, fetchAvailability };

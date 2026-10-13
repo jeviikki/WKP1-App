@@ -1,7 +1,7 @@
 import { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow } from "./components.js";
 import { baseUrl, userUrl, uploadUrl, defLat, defLon } from "./variables.js";
-import { target, restaurantDialog, restaurantError, unregisteredSection, registerBtn, loginBtn, loginDialog, userCard, avatarTarget, nameTarget } from "./elements.js";
-import { fetchData, fetchUserData } from "./utils.js";
+import * as e from "./elements.js";
+import { fetchData, fetchUserData, fetchAvailability } from "./utils.js";
 import { Map, TileLayer, Marker, Circle } from "leaflet";
 ("use strict");
 // default filters
@@ -9,11 +9,12 @@ let filterSort;
 let filterMenuType;
 let filterCompany;
 // table and dialog
-if (!target || !restaurantDialog) {
+if (!e.target || !e.restaurantDialog) {
     throw new Error("dialog and/or table not found");
 }
 // user login forms
 const loginForm = document.querySelector("#login-form");
+const registerForm = document.querySelector("#register-form");
 // map stuff
 let userLat = defLat, userLon = defLon;
 const map = new Map("grand-map").setView([userLat, userLon], 11);
@@ -36,7 +37,7 @@ const getRestaurants = async () => {
     const restaurants = await fetchData(baseUrl);
     // in case it fails
     if (typeof (restaurants) == "string") {
-        restaurantError.classList.add("display-error");
+        e.restaurantError.classList.add("display-error");
     }
     // distance
     const calculatedRestaurants = calcRestaurantDistance(restaurants);
@@ -85,7 +86,7 @@ const renderRestaurants = (restaurants) => {
     //render
     restaurants.forEach((restaurant) => {
         const row = restaurantRow(restaurant);
-        target.append(row);
+        e.target.append(row);
         row.addEventListener("click", async () => {
             // highlight
             document.querySelectorAll(".highlight").forEach((highlighted) => {
@@ -98,15 +99,15 @@ const renderRestaurants = (restaurants) => {
             const menu = await fetchData(fetchMenuUrl);
             // which type of menu to render
             if (filterMenuType == "daily") {
-                restaurantDialog.innerHTML = dailyRestaurantModal(restaurant, menu);
+                e.restaurantDialog.innerHTML = dailyRestaurantModal(restaurant, menu);
             }
             else {
-                restaurantDialog.innerHTML = weeklyRestaurantModal(restaurant, menu);
+                e.restaurantDialog.innerHTML = weeklyRestaurantModal(restaurant, menu);
             }
-            restaurantDialog.showModal();
+            e.restaurantDialog.showModal();
             const closeBtn = document.querySelector("#close-restaurant-btn");
             closeBtn.addEventListener("click", () => {
-                restaurantDialog.close();
+                e.restaurantDialog.close();
             });
         });
     });
@@ -147,7 +148,7 @@ const centerUser = () => {
     you.setLatLng([userLat, userLon]);
 };
 //open register dialog
-registerBtn.addEventListener("click", async () => {
+e.registerBtn.addEventListener("click", async () => {
     const registerDialog = document.querySelector("#register-dialog");
     registerDialog.showModal();
     const closeRegisterBtn = document.querySelector("#close-register-btn");
@@ -156,11 +157,11 @@ registerBtn.addEventListener("click", async () => {
     });
 });
 //open login dialog
-loginBtn.addEventListener("click", async () => {
-    loginDialog.showModal();
+e.loginBtn.addEventListener("click", async () => {
+    e.loginDialog.showModal();
     const closeLoginBtn = document.querySelector("#close-login-btn");
     closeLoginBtn.addEventListener("click", () => {
-        loginDialog.close();
+        e.loginDialog.close();
     });
 });
 const updateFilters = () => {
@@ -192,6 +193,45 @@ navigator.geolocation.getCurrentPosition(success, error, {
     enableHighAccuracy: false,
     timeout: 5000,
 });
+// register account
+const regUser = document.querySelector("#register-username");
+const regEmail = document.querySelector("#register-email");
+const regPass = document.querySelector("#register-password");
+const registerUser = async () => {
+    const credentials = {
+        username: regUser.value,
+        password: regPass.value,
+        email: regEmail.value,
+    };
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(credentials),
+    };
+    return await fetchUserData(userUrl + "users", options);
+};
+const checkAvailability = async (username) => {
+    return await fetchAvailability(userUrl + `users/available/${username}`);
+};
+registerForm.addEventListener("submit", async (evt) => {
+    evt.preventDefault();
+    // check usename availability
+    const availability = await checkAvailability(regUser.value);
+    console.log(availability.available);
+    if (availability.available == false) {
+        alert("Username is already taken!");
+        return;
+    }
+    // if username is available:
+    const user = await registerUser();
+    console.log(user);
+    if (user.message = "ok") {
+        alert("User account created successfully! You can now log in.");
+        e.registerDialog.close();
+    }
+});
 // logging in
 const loginUser = document.querySelector("#login-username");
 const loginPass = document.querySelector("#login-password");
@@ -212,23 +252,49 @@ const login = async () => {
 loginForm.addEventListener("submit", async (evt) => {
     evt.preventDefault();
     const user = await login();
+    // todo: a "wrong username/password" alert
     localStorage.setItem("token", user.token);
-    loginDialog.close();
+    e.loginDialog.close();
     displayUserData(user.data);
 });
+const getUserData = async (token) => {
+    const options = {
+        method: "GET",
+        headers: {
+            Authorization: "Bearer " + token,
+        }
+    };
+    return await fetchUserData(userUrl + "users/token", options);
+};
 const displayUserData = (data) => {
     const userName = data.username || "This user";
     const userFave = data.favouriteRestaurant || "0";
     const userAvatar = data.avatar || null;
-    userCard.classList.add("visible-card");
-    unregisteredSection.classList.add("logged-in");
-    nameTarget.innerText = userName;
+    e.userCard.classList.add("visible-card");
+    e.unregisteredSection.classList.add("logged-in");
+    e.nameTarget.innerText = userName;
     if (userAvatar == null) {
-        avatarTarget.src = "../images/user-svgrepo-com.svg";
+        e.avatarTarget.src = "../images/user-svgrepo-com.svg";
     }
     else {
-        avatarTarget.src = uploadUrl + userAvatar;
+        e.avatarTarget.src = uploadUrl + userAvatar;
+    }
+};
+const checkToken = async () => {
+    const token = window.localStorage.getItem("token");
+    if (!token) {
+        console.log("Not logged in");
+        return;
+    }
+    try {
+        const userData = await getUserData(token);
+        displayUserData(userData);
+    }
+    catch (error) {
+        console.log(error.message);
     }
 };
 centerUser();
 mapRestaurants(await getRestaurants());
+// check if token exists to keep user logged in 
+checkToken();
