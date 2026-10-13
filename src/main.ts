@@ -385,9 +385,9 @@ const checkToken = async (): Promise<void> => {
 
 };
 
+// check if token exists to keep user logged in 
+checkToken();
+
 centerUser();
 
 mapRestaurants(await getRestaurants());
-
-// check if token exists to keep user logged in 
-checkToken();

@@ -52,14 +52,30 @@ h3 {
 #user-card {
 	display: none; /* not displayed by default, only to logged in users */
 	align-items: center;
-	gap: 10px;
 }
 
 .visible-card {
 	display: flex !important; /* for #user-card */
 }
 
+#user-avatar {
+	background-color: var(--fancy-white);
+	height: 150px;
+	width: 150px;
+	border-radius: 150px;
+	margin-right: 5px;
+}
+
+.speech-tail {
+	height: 0;
+	width: 0;
+	margin: 0;
+	border-top: 25px solid transparent;
+	border-right: 40px solid var(--fancy-white);
+}
+
 #user-speech {
+	margin: 0;
 	border-radius: var(--default-radius);
 	background-color: var(--fancy-white);
 	padding: 15px;
@@ -77,13 +93,8 @@ h3 {
 
 #user-fave.nofave {
 	color: var(--fancy-red) !important;
-}
-
-#user-avatar {
-	background-color: var(--fancy-white);
-	height: 150px;
-	width: 150px;
-	border-radius: 150px;
+	text-decoration: none;
+	cursor: default;
 }
 
 /* login buttons */

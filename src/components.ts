@@ -1,7 +1,7 @@
 import { Restaurant, course, dailyMenu, weeklyMenu } from "./types/restaurant.js";
 
 const restaurantRow = (restaurant: Restaurant) => {
-	const { name, address = "Unknown", company } = restaurant;
+	const { name, address, company } = restaurant;
 	const tr = document.createElement("tr");
 	tr.innerHTML = `<td>${name}</td><td>${address}</td><td>${company}</td>`;
 	return tr;

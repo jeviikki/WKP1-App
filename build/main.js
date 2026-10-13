@@ -294,7 +294,7 @@ const checkToken = async () => {
         console.log(error.message);
     }
 };
-centerUser();
-mapRestaurants(await getRestaurants());
 // check if token exists to keep user logged in 
 checkToken();
+centerUser();
+mapRestaurants(await getRestaurants());
