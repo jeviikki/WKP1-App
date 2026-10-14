@@ -37,13 +37,46 @@ h3 {
 }
 
 /* mobile responsive */
+@media screen and (max-width: 600px) {
+	#split form {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 1em;
+	}
+}
 
 @media screen and (max-width: 1300px) {
+	#user-avatar {
+		width: 100px !important;
+		height: 100px !important;
+	}
 	#split {
 		flex-direction: column-reverse;
 	}
 	#split-group {
 		position: static !important;
+	}
+	section {
+		overflow: hidden;
+	}
+	table {
+		max-width: 90%;
+	}
+	dialog {
+		top: 0;
+	}
+	.dialog-top {
+		flex-direction: column-reverse;
+		align-items: flex-start !important;
+	}
+	.dialog-top nav {
+		display: flex;
+		gap: 5px;
+		align-items: flex-end;
+	}
+	.dialog-body {
+		padding: 0;
+		width: 100%;
 	}
 }
 
@@ -279,6 +312,7 @@ dialog {
 	border: var(--border);
 	border-radius: var(--default-radius);
 	max-height: 90%;
+	max-width: 80%;
 	overflow-y: scroll;
 	padding: 0;
 }
@@ -324,12 +358,18 @@ dialog input:valid {
 
 .fave-btn {
 	background-color: var(--fancy-yellow);
-	color: #fff !important;
+	color: #fff;
 }
-
+.fave-btn:hover {
+	background-color: gold;
+	color: var(--fancy-black);
+}
 .close-btn {
 	background-color: var(--fancy-red);
-	color: #fff !important;
+	color: #fff;
+}
+.close-btn:hover {
+	background-color: salmon;
 }
 
 /* login dialog */

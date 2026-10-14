@@ -48,7 +48,8 @@ const weeklyRestaurantModal = (restaurant: Restaurant, menu: weeklyMenu) => {
 				Empty.`;
 			} else {
 				// table header
-				menuHtml += `<h3>${date}</h3>
+				menuHtml += `<div>
+				<h3>${date}</h3>
 				<table>
 					<tr>
 						<th>Course</th>
@@ -59,7 +60,7 @@ const weeklyRestaurantModal = (restaurant: Restaurant, menu: weeklyMenu) => {
 				for (const course of weeklyMenu) {
 					menuHtml += addCourse(course); //returns the course html and adds it to the menu html
 				}
-				menuHtml += "</table>";
+				menuHtml += "</table></div>";
 			}
 		}
 	}
@@ -115,6 +116,12 @@ const addCourse = (course: course) => {
 			// sisältää valkosipulia
 			case "VS":
 				return "<span title='May contain garlic'> VS</span>";
+			// soy
+			case "Soy":
+				return "<span> Soy</span>";
+			// sesame
+			case "Sesame":
+				return "<span> Sesame</span>";
 			default:
 				return diet;
 			}
@@ -139,7 +146,9 @@ const addDialogBody = (menuHtml: string, restaurant: Restaurant, ) => {
 			<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
 			<span id="place-company"><br><b>Company:</b> ${company}</p></span>
 		<h2>Menu</h2>
-		${menuHtml}
+		<div class="dialog-menu-section">
+			${menuHtml}
+		</div>
 		</div>`
 	return html
 }

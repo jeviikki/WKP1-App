@@ -380,8 +380,9 @@ const getUserData = async (token: string): Promise<User> => {
 
 const displayUserData = async (data: User) => {
 	const userName = data.username || "This user";
-	const userFave = data.favouriteRestaurant || "0";
+	const userFave = data.favouriteRestaurant || "";
 	const userAvatar = data.avatar || null;
+	console.log(userFave);
 	//make logged in only content visible
 	e.userCard.classList.add("visible-card");
 	e.unregisteredSection.classList.add("logged-in");
@@ -394,8 +395,7 @@ const displayUserData = async (data: User) => {
 	}
 	// fave restaurant link
 	const faveLink = document.querySelector("#user-fave") as HTMLLinkElement;
-	if (typeof userFave == null) {
-		faveLink.innerText = "none of them";
+	if (userFave == "") {
 		return
 	}
 	faveLink.classList.remove("nofave");

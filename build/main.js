@@ -287,8 +287,9 @@ const getUserData = async (token) => {
 };
 const displayUserData = async (data) => {
     const userName = data.username || "This user";
-    const userFave = data.favouriteRestaurant || "0";
+    const userFave = data.favouriteRestaurant || "";
     const userAvatar = data.avatar || null;
+    console.log(userFave);
     //make logged in only content visible
     e.userCard.classList.add("visible-card");
     e.unregisteredSection.classList.add("logged-in");
@@ -302,8 +303,7 @@ const displayUserData = async (data) => {
     }
     // fave restaurant link
     const faveLink = document.querySelector("#user-fave");
-    if (typeof userFave == null) {
-        faveLink.innerText = "none of them";
+    if (userFave == "") {
         return;
     }
     faveLink.classList.remove("nofave");
