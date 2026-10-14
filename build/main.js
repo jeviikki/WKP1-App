@@ -95,22 +95,41 @@ const renderRestaurants = (restaurants) => {
             row.classList.add("highlight");
             centerRestaurant(restaurant);
             // dialog
-            const fetchMenuUrl = `${baseUrl}/${filterMenuType}/${restaurant._id}/en`;
-            const menu = await fetchData(fetchMenuUrl);
-            // which type of menu to render
-            if (filterMenuType == "daily") {
-                e.restaurantDialog.innerHTML = dailyRestaurantModal(restaurant, menu);
-            }
-            else {
-                e.restaurantDialog.innerHTML = weeklyRestaurantModal(restaurant, menu);
-            }
-            e.restaurantDialog.showModal();
-            const closeBtn = document.querySelector("#close-restaurant-btn");
-            closeBtn.addEventListener("click", () => {
-                e.restaurantDialog.close();
-            });
+            await renderDialog(restaurant);
         });
     });
+};
+const renderDialog = async (restaurant) => {
+    const fetchMenuUrl = `${baseUrl}/${filterMenuType}/${restaurant._id}/en`;
+    const menu = await fetchData(fetchMenuUrl);
+    // which type of menu to render
+    if (filterMenuType == "daily") {
+        e.restaurantDialog.innerHTML = dailyRestaurantModal(restaurant, menu);
+    }
+    else {
+        e.restaurantDialog.innerHTML = weeklyRestaurantModal(restaurant, menu);
+    }
+    // ability to favorite a restaurant
+    const faveBtn = document.querySelector("#fave-btn");
+    faveBtn.addEventListener("click", async () => {
+        const faveId = restaurant._id;
+        const token = window.localStorage.getItem("token");
+        if (!token) {
+            alert("Log in to favorite restaurants!");
+            return;
+        }
+        const user = {
+            favouriteRestaurant: faveId,
+        };
+        await updateUserData(user, token);
+        await checkToken();
+    });
+    // close modal
+    const closeBtn = document.querySelector("#close-restaurant-btn");
+    closeBtn.addEventListener("click", () => {
+        e.restaurantDialog.close();
+    });
+    e.restaurantDialog.showModal();
 };
 const calcRestaurantDistance = (restaurants) => {
     // calculates distance between user location and restaurant location and saves it for later use
@@ -266,12 +285,14 @@ const getUserData = async (token) => {
     };
     return await fetchUserData(userUrl + "users/token", options);
 };
-const displayUserData = (data) => {
+const displayUserData = async (data) => {
     const userName = data.username || "This user";
     const userFave = data.favouriteRestaurant || "0";
     const userAvatar = data.avatar || null;
+    //make logged in only content visible
     e.userCard.classList.add("visible-card");
     e.unregisteredSection.classList.add("logged-in");
+    // name and avatar
     e.nameTarget.innerText = userName;
     if (userAvatar == null) {
         e.avatarTarget.src = "../images/user-svgrepo-com.svg";
@@ -279,6 +300,23 @@ const displayUserData = (data) => {
     else {
         e.avatarTarget.src = uploadUrl + userAvatar;
     }
+    // fave restaurant link
+    const faveLink = document.querySelector("#user-fave");
+    if (typeof userFave == null) {
+        faveLink.innerText = "none of them";
+        return;
+    }
+    faveLink.classList.remove("nofave");
+    faveLink.innerText = userFave;
+    const restaurantId = faveLink.innerText;
+    // get restaurant info
+    const restaurant = await fetchData(baseUrl + restaurantId);
+    faveLink.innerText = restaurant.name;
+    faveLink.addEventListener("click", async () => {
+        centerRestaurant(restaurant);
+        filterMenuType = "weekly";
+        await renderDialog(restaurant);
+    });
 };
 const checkToken = async () => {
     const token = window.localStorage.getItem("token");
@@ -288,13 +326,24 @@ const checkToken = async () => {
     }
     try {
         const userData = await getUserData(token);
-        displayUserData(userData);
+        await displayUserData(userData);
     }
     catch (error) {
         console.log(error.message);
     }
 };
+const updateUserData = async (user, token) => {
+    const options = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+        },
+        body: JSON.stringify(user)
+    };
+    return await fetchUserData(userUrl + "users", options);
+};
 // check if token exists to keep user logged in 
-checkToken();
+await checkToken();
 centerUser();
 mapRestaurants(await getRestaurants());

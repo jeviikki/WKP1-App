@@ -17,6 +17,7 @@ interface UpdateUser {
   username?: string;
   email?: string;
   avatar?: string;
+	favouriteRestaurant?: string;
 }
 
 export type {User, LoginUser, UpdateUser};

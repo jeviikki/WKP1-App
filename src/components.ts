@@ -8,7 +8,6 @@ const restaurantRow = (restaurant: Restaurant) => {
 };
 
 const dailyRestaurantModal = (restaurant: Restaurant, menu: dailyMenu) => {
-	const { name, address, postalCode, city, phone, company } = restaurant;
 	const dailyMenu = menu.courses;
 	let menuHtml = "";
 
@@ -28,26 +27,12 @@ const dailyRestaurantModal = (restaurant: Restaurant, menu: dailyMenu) => {
 		}
 		menuHtml += "</table>";
 	}
-	const dialogHtml = `
-		<div class="dialog-top">
-			<h2>${name}</h2>
-			<button id="close-restaurant-btn" class="close-btn">X</button>
-		</div>
 
-		<div class="dialog-body">
-			<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
-			<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
-			<span id="place-company"><br><b>Company:</b> ${company}</p></span>
-		<h2>Menu</h2>
-		${menuHtml}
-		</div>`;
-	return dialogHtml;
+	return addDialogBody(menuHtml, restaurant);
 }
 
 const weeklyRestaurantModal = (restaurant: Restaurant, menu: weeklyMenu) => {
-	const { name, address, postalCode, city, phone, company } = restaurant;
 	const week = menu.days || "";
-	console.log(week);
 	let menuHtml = "";
 	if (week.length < 1) {
 		// in case of no weekly menu (e.g. Stadin AO as of oct 11th)
@@ -78,20 +63,8 @@ const weeklyRestaurantModal = (restaurant: Restaurant, menu: weeklyMenu) => {
 			}
 		}
 	}
-	const dialogHtml = `
-		<div class="dialog-top">
-			<h2>${name}</h2>
-			<button id="close-restaurant-btn" class="close-btn">X</button>
-		</div>
-
-		<div class="dialog-body">
-			<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
-			<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
-			<span id="place-company"><br><b>Company:</b> ${company}</p></span>
-		<h2>Menu</h2>
-		${menuHtml}
-		</div>`;
-		return dialogHtml;
+	
+	return addDialogBody(menuHtml, restaurant);
 }
 
 const addCourse = (course: course) => {
@@ -149,5 +122,26 @@ const addCourse = (course: course) => {
 		return courseHtml;
 	
 };
+
+const addDialogBody = (menuHtml: string, restaurant: Restaurant, ) => {
+	const { name, address, postalCode, city, phone, company } = restaurant;
+	const html = `
+		<div class="dialog-top">
+			<h2>${name}</h2>
+			<nav>
+				<button id="fave-btn" class="big-btn fave-btn">Favorite</button>
+				<button id="close-restaurant-btn" class="big-btn close-btn">X</button>
+			</nav>
+		</div>
+
+		<div class="dialog-body">
+			<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
+			<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
+			<span id="place-company"><br><b>Company:</b> ${company}</p></span>
+		<h2>Menu</h2>
+		${menuHtml}
+		</div>`
+	return html
+}
 
 export { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow };

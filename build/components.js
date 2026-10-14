@@ -5,7 +5,6 @@ const restaurantRow = (restaurant) => {
     return tr;
 };
 const dailyRestaurantModal = (restaurant, menu) => {
-    const { name, address, postalCode, city, phone, company } = restaurant;
     const dailyMenu = menu.courses;
     let menuHtml = "";
     if (dailyMenu.length < 1) {
@@ -24,25 +23,10 @@ const dailyRestaurantModal = (restaurant, menu) => {
         }
         menuHtml += "</table>";
     }
-    const dialogHtml = `
-		<div class="dialog-top">
-			<h2>${name}</h2>
-			<button id="close-restaurant-btn" class="close-btn">X</button>
-		</div>
-
-		<div class="dialog-body">
-			<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
-			<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
-			<span id="place-company"><br><b>Company:</b> ${company}</p></span>
-		<h2>Menu</h2>
-		${menuHtml}
-		</div>`;
-    return dialogHtml;
+    return addDialogBody(menuHtml, restaurant);
 };
 const weeklyRestaurantModal = (restaurant, menu) => {
-    const { name, address, postalCode, city, phone, company } = restaurant;
     const week = menu.days || "";
-    console.log(week);
     let menuHtml = "";
     if (week.length < 1) {
         // in case of no weekly menu (e.g. Stadin AO as of oct 11th)
@@ -73,20 +57,7 @@ const weeklyRestaurantModal = (restaurant, menu) => {
             }
         }
     }
-    const dialogHtml = `
-		<div class="dialog-top">
-			<h2>${name}</h2>
-			<button id="close-restaurant-btn" class="close-btn">X</button>
-		</div>
-
-		<div class="dialog-body">
-			<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
-			<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
-			<span id="place-company"><br><b>Company:</b> ${company}</p></span>
-		<h2>Menu</h2>
-		${menuHtml}
-		</div>`;
-    return dialogHtml;
+    return addDialogBody(menuHtml, restaurant);
 };
 const addCourse = (course) => {
     const noDiets = "No special diets listed";
@@ -137,5 +108,25 @@ const addCourse = (course) => {
         }
     })}</td>`;
     return courseHtml;
+};
+const addDialogBody = (menuHtml, restaurant) => {
+    const { name, address, postalCode, city, phone, company } = restaurant;
+    const html = `
+		<div class="dialog-top">
+			<h2>${name}</h2>
+			<nav>
+				<button id="fave-btn" class="big-btn fave-btn">Favorite</button>
+				<button id="close-restaurant-btn" class="big-btn close-btn">X</button>
+			</nav>
+		</div>
+
+		<div class="dialog-body">
+			<span id="place-address"><br><b>Address:</b> ${address}, ${postalCode} ${city}</span>
+			<span id="place-phone"><br><b>Phone number:</b> ${phone}</span>
+			<span id="place-company"><br><b>Company:</b> ${company}</p></span>
+		<h2>Menu</h2>
+		${menuHtml}
+		</div>`;
+    return html;
 };
 export { dailyRestaurantModal, weeklyRestaurantModal, restaurantRow };

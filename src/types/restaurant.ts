@@ -1,7 +1,7 @@
 type Restaurant = {
-	_id: String;
+	_id: string;
 	companyId: Number;
-	name: String;
+	name: string;
 	address: String;
 	postalCode: String;
 	city: String;
