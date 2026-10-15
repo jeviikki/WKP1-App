@@ -394,9 +394,7 @@ const displayUserData = async (data: User) => {
 
 	// name and avatar
 	e.nameTarget.innerText = userName;
-	if (userAvatar == "") {
-		e.avatarTarget.src = "../images/user-svgrepo-com.svg";
-	} else{
+	if (userAvatar != "") {
 		e.avatarTarget.src = uploadUrl + userAvatar;
 	}
 	if (userFave == "") {
