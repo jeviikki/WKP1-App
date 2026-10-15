@@ -314,13 +314,13 @@ const registerUser = async (): Promise<LoginUser> => {
   return await fetchUserData(userUrl + "users", options);
 };
 
+// check username availability
 const checkAvailability = async(username: String): Promise<any> => {
   return await fetchAvailability(userUrl + `users/available/${username}`);
 }
 
 registerForm.addEventListener("submit", async (evt) => {
   evt.preventDefault();
-	// check usename availability
 	const availability = await checkAvailability(regUser.value);
 	console.log(availability.available)
 	if (availability.available == false) {
@@ -360,7 +360,11 @@ const login = async (): Promise<LoginUser> => {
 loginForm.addEventListener("submit", async (evt) => {
   evt.preventDefault();
   const user = await login();
-	// todo: a "wrong username/password" alert
+	// in case of wrong username or password
+	if (typeof user == "string") {
+		alert("Wrong username or password.")
+		return
+	}
   localStorage.setItem("token", user.token);
 	e.loginDialog.close();
   displayUserData(user.data);
@@ -385,7 +389,7 @@ const displayUserData = async (data: User) => {
 	console.log(userFave);
 	//make logged in only content visible
 	e.userCard.classList.add("visible-card");
-	e.unregisteredSection.classList.add("logged-in");
+	e.unregisteredSection.classList.add("hidden");
 	// name and avatar
 	e.nameTarget.innerText = userName;
 	if (userAvatar == null) {
