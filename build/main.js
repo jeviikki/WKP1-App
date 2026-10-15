@@ -4,10 +4,11 @@ import * as e from "./elements.js";
 import { fetchData, fetchUserData, fetchAvailability } from "./utils.js";
 import { Map, TileLayer, Marker, Circle } from "leaflet";
 ("use strict");
-// default filters
+// preferences
 let filterSort;
 let filterMenuType;
 let filterCompany;
+let faveRestaurant;
 // table and dialog
 if (!e.target || !e.restaurantDialog) {
     throw new Error("dialog and/or table not found");
@@ -292,36 +293,38 @@ const getUserData = async (token) => {
 const displayUserData = async (data) => {
     const userName = data.username || "This user";
     const userFave = data.favouriteRestaurant || "";
-    const userAvatar = data.avatar || null;
-    console.log(userFave);
+    const userAvatar = data.avatar || "";
     //make logged in only content visible
     e.userCard.classList.add("visible-card");
     e.unregisteredSection.classList.add("hidden");
     // name and avatar
     e.nameTarget.innerText = userName;
-    if (userAvatar == null) {
+    if (userAvatar == "") {
         e.avatarTarget.src = "../images/user-svgrepo-com.svg";
     }
     else {
         e.avatarTarget.src = uploadUrl + userAvatar;
     }
-    // fave restaurant link
-    const faveLink = document.querySelector("#user-fave");
     if (userFave == "") {
         return;
     }
-    faveLink.classList.remove("nofave");
-    faveLink.innerText = userFave;
-    const restaurantId = faveLink.innerText;
+    e.faveTarget.classList.remove("nofave");
+    e.faveTarget.classList.add("hidden"); // hide temporarily
+    e.faveTarget.innerText = userFave;
+    const restaurantId = e.faveTarget.innerText;
     // get restaurant info
     const restaurant = await fetchData(baseUrl + restaurantId);
-    faveLink.innerText = restaurant.name;
-    faveLink.addEventListener("click", async () => {
-        centerRestaurant(restaurant);
-        filterMenuType = "weekly";
-        await renderDialog(restaurant);
-    });
+    e.faveTarget.innerText = restaurant.name;
+    e.faveTarget.classList.remove("hidden");
+    faveRestaurant = restaurant;
+    e.faveTarget.removeEventListener("click", showFaveDialog);
+    e.faveTarget.addEventListener("click", showFaveDialog);
 };
+const showFaveDialog = (async () => {
+    centerRestaurant(faveRestaurant);
+    filterMenuType = "weekly";
+    await renderDialog(faveRestaurant);
+});
 const checkToken = async () => {
     const token = window.localStorage.getItem("token");
     if (!token) {
