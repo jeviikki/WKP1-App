@@ -293,12 +293,12 @@ form input[type="submit"]:hover {
 
 form input[type="submit"]:active {
 	background-color: var(--fancy-blue);
-	align-self: flex-start;
 }
 
 .filtering-option {
 	width: 45%;
 	margin: 5px;
+	justify-content: stretch;
 }
 
 .checkbox-group {
