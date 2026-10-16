@@ -107,10 +107,15 @@ const addCourse = (course) => {
                 return "<span title='May contain garlic'> VS</span>";
             // soy
             case "Soy":
-                return "<span> Soy</span>";
+                return "<span title='May contain soy'> Soy</span>";
             // sesame
             case "Sesame":
-                return "<span> Sesame</span>";
+                return "<span title='May contain sesame seeds'> Sesame</span>";
+            // nuts
+            case "Nuts":
+                return "<span title='May contain nuts'> Nuts</span>";
+            case "Egg":
+                return "<span title='May contain eggs'> Egg</span>";
             default:
                 return diet;
         }
