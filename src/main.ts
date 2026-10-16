@@ -162,6 +162,7 @@ const renderDialog = async (restaurant: Restaurant) => {
 		}
 		await updateUserData( user, token );
 		await checkToken();
+		alert("Favorite restaurant updated!");
 	});
 
 	// close modal

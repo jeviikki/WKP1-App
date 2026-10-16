@@ -124,6 +124,7 @@ const renderDialog = async (restaurant) => {
         };
         await updateUserData(user, token);
         await checkToken();
+        alert("Favorite restaurant updated!");
     });
     // close modal
     const closeBtn = document.querySelector("#close-restaurant-btn");
