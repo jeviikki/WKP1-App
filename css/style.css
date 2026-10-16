@@ -1,5 +1,4 @@
 :root {
-	--border: 1px solid #ccc;
 	--fancy-yellow: #fba823;
 	--fancy-red: #c3423f;
 	--fancy-black: #1c1d21;
@@ -224,7 +223,7 @@ th {
 }
 
 td {
-	border-bottom: var(--border);
+	border-bottom: 1px solid #ccc;
 	padding: 0.5em 1em;
 	flex-wrap: wrap;
 }
@@ -332,7 +331,7 @@ dialog {
 	position: fixed;
 	top: 0;
 	right: 0;
-	border: var(--border);
+	border: none;
 	border-radius: var(--default-radius);
 	max-height: 90%;
 	max-width: 80%;
