@@ -97,7 +97,8 @@ const addCourse = (course) => {
                 return "<span title='Dairy-free'> M</span>";
             //vegaani
             case "Veg":
-                return "<span title='Vegan'> Veg</span>";
+            case "Vegan":
+                return "<span title='Vegan'> Vegan</span>";
             // sisältää allergeeneja
             case "A":
                 return "<span title='May contain allergens'> A</span>";

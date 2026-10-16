@@ -52,6 +52,9 @@ h3 {
 		flex-direction: column;
 		gap: 1em;
 	}
+	table {
+		font-size: 0.8em;
+	}
 	.filtering-option {
 		width: 100% !important;
 	}
@@ -76,6 +79,7 @@ h3 {
 	}
 	dialog {
 		top: 0;
+		max-width: 90% !important;
 	}
 	.dialog-top {
 		flex-direction: row;
