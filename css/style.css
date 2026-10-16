@@ -210,7 +210,6 @@ table {
 	margin: 0;
 	padding: 0;
 	background-color: var(--fancy-white);
-	background-image: linear-gradient(to right, transparent 80%, var(--fancy-black 100%));
 }
 
 th {
