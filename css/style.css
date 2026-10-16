@@ -61,8 +61,8 @@ h3 {
 		width: 100%;
 		text-align: center;
 	}
-	.dialog-body span {
-		padding: 0px 10px 10px !important;
+	.dialog-body {
+		padding: 10px !important;
 	}
 }
 
@@ -110,15 +110,15 @@ h3 {
 	height: 150px;
 	width: 150px;
 	border-radius: 150px;
-	margin-right: 5px;
+	margin-right: 10px;
 }
 
 .speech-tail {
 	height: 0;
 	width: 0;
 	margin: 0;
-	border-top: 25px solid transparent;
-	border-right: 40px solid var(--fancy-white);
+	border-top: 20px solid transparent;
+	border-right: 20px solid var(--fancy-white);
 }
 
 #user-speech {
@@ -382,6 +382,7 @@ dialog input:valid {
 }
 .dialog-menu-section div {
 	overflow-x: scroll;
+	overflow-y: visible;
 }
 
 .fave-btn {
