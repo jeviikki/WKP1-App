@@ -175,7 +175,6 @@ section {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
-	overflow-x: scroll;
 }
 
 .section-top {
@@ -258,7 +257,7 @@ td {
 	top: 0;
 }
 #split table {
-	max-width: 100%;
+	width: 100%;
 }
 
 /* filter */
