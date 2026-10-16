@@ -278,10 +278,8 @@ form {
 form select {
 	padding: 5px;
 	font-size: 1em;
-}
-
-form input[type="select"] {
-	border: none;
+	border: 1px grey solid;
+	background-color: var(--fancy-white);
 }
 
 form input[type="submit"] {
@@ -307,7 +305,6 @@ form input[type="submit"]:active {
 .checkbox-group {
 	display: flex;
 	gap: 10px;
-	justify-content: baseline;
 }
 
 /* map */
